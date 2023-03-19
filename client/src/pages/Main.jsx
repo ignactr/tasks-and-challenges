@@ -1,7 +1,7 @@
-function Git() {
+function Main() {
     return (
       <>GIT</>
     )
   }
   
-  export default Git
+  export default Main

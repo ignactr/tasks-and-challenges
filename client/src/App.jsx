@@ -1,11 +1,11 @@
 import {BrowserRouter, Routes, Route } from 'react-router-dom';
-import Git from './pages/Git';
+import Main from './pages/Main';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/Git" element={<Git />}/>
+        <Route path="/main" element={<Main />}/>
       </Routes>
     </BrowserRouter>
   )
