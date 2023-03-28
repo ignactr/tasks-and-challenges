@@ -28,7 +28,7 @@ const challengeSchema = new mongoose.Schema({
         type: Number,
         default: 20
     },
-    challangeState: {
+    challengeState: {
         type: Number,
         default: 0
     },
