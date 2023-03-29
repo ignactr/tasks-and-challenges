@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 
 function Main() {
   const [challenges, setChallenges] = useState([]);
   const [buttonState, setButtonState] = useState(false);
 
+  const getChallenges = () => {
+    const response = fetch(`http://localhost:5000/api/showChallenges`);
+    setChallenges(response)
+  }
+
   useEffect(()=>{
-    fetch('/api/showChallenges').then(resonse=>Response.json()).then(data => setChallenges(data.docs)).catch(error => console.error(error));
+    getChallenges();
   }, []);
 
   function retry(){
