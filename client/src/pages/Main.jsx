@@ -6,7 +6,7 @@ function Main() {
   const [buttonState, setButtonState] = useState(false);
 
   const getChallenges = async () => {
-    await fetch('/api/showChallenges')
+    await fetch('http://localhost:5000/api/showChallenges')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
