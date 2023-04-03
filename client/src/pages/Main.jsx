@@ -5,14 +5,22 @@ function Main() {
   const [challenges, setChallenges] = useState([]);
   const [buttonState, setButtonState] = useState(false);
 
-  const getChallenges = () => {
-    const response = fetch(`http://localhost:5000/api/showChallenges`);
-    setChallenges(response)
+  const getChallenges = async () => {
+    await fetch('/api/showChallenges')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Challenges data:', data);
+        setChallenges(data);
+      });
+      /*.catch(error => {
+        console.error('There was an error fetching the challenges:', error);
+      });*/
   }
-
-  useEffect(()=>{
-    getChallenges();
-  }, []);
 
   function retry(){
     if(buttonState === true){
@@ -22,6 +30,11 @@ function Main() {
       setButtonState(true);
     }
   }
+  getChallenges();
+
+  /*useEffect(()=>{
+    getChallenges();
+  }, []);*/
 
   return (
     <div>
