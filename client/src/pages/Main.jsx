@@ -16,10 +16,10 @@ function Main() {
       .then((data) => {
         console.log('Challenges data:', data);
         setChallenges(data);
-      });
-      /*.catch(error => {
+      })
+      .catch(error => {
         console.error('There was an error fetching the challenges:', error);
-      });*/
+      });
   }
 
   function retry(){
@@ -30,11 +30,10 @@ function Main() {
       setButtonState(true);
     }
   }
-  getChallenges();
 
-  /*useEffect(()=>{
+  useEffect(()=>{
     getChallenges();
-  }, []);*/
+  }, []);
 
   return (
     <div>
@@ -54,4 +53,4 @@ function Main() {
   )
 }
   
-  export default Main
+export default Main
