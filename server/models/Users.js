@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
         default: false,
     }
 },
-{collection: 'challenges'});
+{collection: 'users'});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
