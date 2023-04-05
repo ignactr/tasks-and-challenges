@@ -16,7 +16,7 @@ app.listen(port, ()=>{
 });
 
 //connecting to mongoDB database
-mongoose.connect('mongodb+srv://IgnacyTrocki:haslo123@cluster1.udrw4bw.mongodb.net/tasks-and-challenges?retryWrites=true&w=majority').then(()=> {
+mongoose.connect('mongodb://127.0.0.1:27017/tasks-and-challenges').then(()=> {
     console.log('Connected to database');
 }).catch((error) => {
     console.error('Failed to connect to database: ',error);

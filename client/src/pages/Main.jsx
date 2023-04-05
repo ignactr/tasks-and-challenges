@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from 'axios';
 
 function Main() {
   const [challenges, setChallenges] = useState([]);
@@ -43,6 +42,7 @@ function Main() {
       <ul>
         {challenges.map(challenge => (
           <li key={challenge._id}>
+            <p>author: {challenge._id}</p>
             <p>author: {challenge.author}</p>
             <p>title: {challenge.title}</p>
             <p>details: {challenge.details}</p>
