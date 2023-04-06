@@ -6,15 +6,24 @@ function Register(){
     const [passwordController, setPasswordController] = useState('');
     const [secondPasswordController, setSecondPasswordController] = useState('');
     const [passwordPower, setPasswordPower] = useState(0);
+    const [responseMessage, setResponseMessage] = useState('');
 
-    const handleRegister = async () => {
+    const handleRegister = async (event) => {
+        event.preventDefault();
         await axios.post('http://localhost:5000/api/handleRegistration', {
             login: loginController,
             password: passwordController,
         }).then(response => {
-            console.log(response.status === 400);
+            if (response.status === 201) {
+                setResponseMessage('User added');
+            }
         }).catch(error => {
-            console.log(error);
+            if (error.response && error.response.status === 409) {
+                setResponseMessage('User with the same login already exists');
+            } else {
+                console.log(error);
+                setResponseMessage('Unexpected error');
+            }
         });
     };
     const passChanger = (event) =>{
@@ -46,11 +55,12 @@ function Register(){
 
     return(
         <div>
-            <form onSubmit={handleRegister}>
+            <form onSubmit={event => handleRegister(event)}>
                 Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
                 Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
-                Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><br/>
+                Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
                 <input type="submit" value="sign up"/>
+                <p>{responseMessage}</p>
             </form>
         </div>
     );

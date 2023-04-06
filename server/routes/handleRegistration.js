@@ -8,22 +8,24 @@ router.post('/', async (req,res)=>{
         const { login, password } = req.body;
         const saltValue = bcrypt.genSaltSync(10);
         const encryptedPassword = await bcrypt.hash(password,saltValue)
+        console.log('working...');
 
         const user = await users.findOne({ login });
         if (user) {
-        return res.status(400).json({ error: 'User already exists' });
+            console.log('User already exists');
+            res.status(409).json({ error: 'User already exists' });
+        } else{
+            const newUser = new users({
+                login,
+                password: encryptedPassword,
+            });
+    
+            await newUser.save();
+            res.status(201).json({ message: 'User registered successfully' });
         }
-
-        const newUser = new users({
-            login,
-            password: encryptedPassword,
-          });
-
-        await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
