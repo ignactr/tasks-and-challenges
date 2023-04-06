@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const collection = require('../models/Challenges');
+const challenges = require('../models/Challenges');
 
 router.get('/', async (req, res) => {
     try {
-      const tasks = await collection.find();
+      const tasks = await challenges.find();
       res.send(tasks);
     } catch (error) {
       console.log(error);
