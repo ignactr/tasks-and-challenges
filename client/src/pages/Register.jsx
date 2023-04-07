@@ -60,6 +60,7 @@ function Register(){
                 Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
                 Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
                 <input type="submit" value="sign up"/>
+                <p>have an account- <a href="http://localhost:5173/login">log in</a> </p>
                 <p>{responseMessage}</p>
             </form>
         </div>

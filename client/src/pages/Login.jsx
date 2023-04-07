@@ -11,9 +11,10 @@ function Login(){
     return(
         <div>
             <form onSubmit={handleLogin}>
-                <input value={loginController} onChange={event => setLoginController(event.target.value)} />
-                <input value={passwordController} onChange={event => setPasswordController(event.target.value)} />
+                Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
+                Password: <input value={passwordController} onChange={event => setPasswordController(event.target.value)} /><br/>
                 <input type="submit" value="sign in"/>
+                <p>don't have an account- <a href="http://localhost:5173/register">sign up</a> </p>
             </form>
         </div>
     );

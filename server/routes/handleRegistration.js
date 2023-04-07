@@ -8,11 +8,9 @@ router.post('/', async (req,res)=>{
         const { login, password } = req.body;
         const saltValue = bcrypt.genSaltSync(10);
         const encryptedPassword = await bcrypt.hash(password,saltValue)
-        console.log('working...');
 
         const user = await users.findOne({ login });
         if (user) {
-            console.log('User already exists');
             res.status(409).json({ error: 'User already exists' });
         } else{
             const newUser = new users({
