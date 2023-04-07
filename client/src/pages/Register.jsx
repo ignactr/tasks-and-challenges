@@ -55,7 +55,7 @@ function Register(){
 
     return(
         <div>
-            <form onSubmit={event => handleRegister(event)}>
+            <form onSubmit={(event) => handleRegister(event)}>
                 Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
                 Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
                 Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
