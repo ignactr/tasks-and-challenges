@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require("dotenv").config();
 
 const app = express();
 
@@ -23,7 +24,7 @@ app.listen(port, ()=>{
 });
 
 //connecting to mongoDB database
-mongoose.connect('mongodb+srv://IgnacyTrocki:haslo123@cluster1.udrw4bw.mongodb.net/tasks-and-challenges?retryWrites=true&w=majority').then(()=> {
+mongoose.connect(process.env.DB_URI).then(()=> {
     console.log('Connected to database');
 }).catch((error) => {
     console.error('Failed to connect to database: ',error);
