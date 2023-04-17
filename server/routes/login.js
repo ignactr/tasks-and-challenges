@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const users = require('../models/Users');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.post('/', async (req, res) => {
     try {
@@ -18,7 +19,8 @@ router.post('/', async (req, res) => {
       }
       const match = await bcrypt.compare(givenPassword, password);
       if (match) {
-        res.status(200).json({ message: 'Successfully logged in' });
+        const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_SECRET_KEY, {expiresIn: process.env.ACCESS_EXPIRY_TIME});
+        res.status(200).json({ message: 'Successfully logged in', token: accessToken });
       } else {
         res.status(300).json({ error: 'Wrong password' });
       }

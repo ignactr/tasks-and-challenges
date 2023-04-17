@@ -6,8 +6,9 @@ function Main() {
   const [buttonState, setButtonState] = useState(false);
 
   const getChallenges = async () => {
+    const token = localStorage.getItem('accessToken');
     try {
-      const response = await axios.get('http://localhost:5000/api/showChallenges');
+      const response = await axios.post('http://localhost:5000/api/showChallenges',null,{headers: {'Authorization': `Bearer ${token}`}});
       setChallenges(response.data);
     } catch (error) {
       console.error('There was an error fetching the challenges:', error);

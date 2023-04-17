@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login(){
     const [loginController, setLoginController] = useState('');
     const [passwordController, setPasswordController] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
+
+    const navigateTo = useNavigate();
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -13,7 +16,9 @@ function Login(){
             password: passwordController,
         }).then(response => {
             if (response.status === 200) {
-                setResponseMessage('Logged in');
+                localStorage.setItem('accessToken',response.data.token);
+                navigateTo('../');
+                //setResponseMessage('Logged in');
             }
             else if(response.status === 410){
                 setResponseMessage('No user found');
