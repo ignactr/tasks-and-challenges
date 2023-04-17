@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const challenges = require('../models/Challenges');
-const authMiddleware = require('../middlewares/authMiddleware');
+const logCheck = require('../middlewares/logCheck');
 
-router.post('/',authMiddleware, async (req, res) => {
+router.post('/',logCheck, async (req, res) => {
     try {
+      const userId = req.userId
       const tasks = await challenges.find();
-      res.send(tasks);
+      res.status(207).send({tasks,userId});
     } catch (error) {
       console.log(error);
       if (error.response.status === 401) {

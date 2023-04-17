@@ -1,18 +1,30 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Main() {
   const [challenges, setChallenges] = useState([]);
   const [buttonState, setButtonState] = useState(false);
 
+  const navigateTo = useNavigate();
+
   const getChallenges = async () => {
     const token = localStorage.getItem('accessToken');
-    try {
-      const response = await axios.post('http://localhost:5000/api/showChallenges',null,{headers: {'Authorization': `Bearer ${token}`}});
-      setChallenges(response.data);
-    } catch (error) {
-      console.error('There was an error fetching the challenges:', error);
-    }
+    await axios.post('http://localhost:5000/api/showChallenges',null,
+      {headers: {'Authorization': `Bearer ${token}`}}
+    ).then(response => {
+      //if user is logged in and there are no errors
+      if (response.status === 207) {
+        setChallenges(response.data.tasks);
+      }
+    }).catch(error =>{
+      if (error.response && error.response.status === 401) {
+        navigateTo('../notlogged');
+      } 
+      else if (error.response && error.response.status === 500) {
+       console.log(error);
+      }
+    });
   };
 
   function retry(){
