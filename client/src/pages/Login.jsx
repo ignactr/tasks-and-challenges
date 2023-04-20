@@ -56,28 +56,33 @@ function Login(){
         //     </form>
         // </div>
 
-        <Container fluid>
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
-                <Col className=''>
+                <div className='text-center'>
                     <h1>Tasks and Challenges</h1>
-                </Col>
-            </Row>
-            <Row>
-                <Col className="m-5 p-3 border border-5 border-light rounded">
-                    <Form>
-                        <Form.Group className="mb-3" controlId="formLogin" onSubmit={(event) => handleLogin(event)}>
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control value={loginController} onChange={event => setLoginController(event.target.value)} type="text" placeholder="Enter username" />
+                </div>
+                <Col className='m-3 p-3 border border-5 border-light rounded'>
+                    <Form onSubmit={(event) => handleLogin(event)}>
+                        <Form.Group className='mb-3' controlId='formLogin'>
+                            <Form.Label>Login</Form.Label>
+                            <Form.Control value={loginController} onChange={event => setLoginController(event.target.value)} type='text' placeholder='Enter login' />
                         </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
-                            <Form.Control value={passwordController} onChange={event => setPasswordController(event.target.value)} type="password" placeholder="Password" />
+                            <Form.Control value={passwordController} onChange={event => setPasswordController(event.target.value)} type='password' placeholder='Password' />
                         </Form.Group>
-                        <Button className="w-100" variant="success" type="submit">
+                        <Button className='w-100' variant='success' type='submit'>
                             Sign in
                         </Button>
-                        <Form.Text>Don't have an account? <a href="http://localhost:5173/register">Sign up</a></Form.Text>
-                        <Form.Text>{responseMessage}</Form.Text>
+                        <Form.Group className='text-center m-1'>
+                            <Form.Text id='signUpLink'>
+                                Don't have an account? <a href='http://localhost:5173/register'>Sign up</a>
+                            </Form.Text>
+                            <br></br>
+                            <Form.Text className='text-danger' id='responseMessage'>
+                                {responseMessage}
+                            </Form.Text>
+                        </Form.Group>
                     </Form>
                 </Col>
             </Row>

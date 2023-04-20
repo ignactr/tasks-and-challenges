@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ProgressBar from 'react-bootstrap/ProgressBar';
 
 function Register(){
     const [loginController, setLoginController] = useState('');
@@ -54,16 +60,55 @@ function Register(){
     }
 
     return(
-        <div>
-            <form onSubmit={(event) => handleRegister(event)}>
-                Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
-                Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
-                Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
-                <input type="submit" value="sign up"/>
-                <p>have an account- <a href="http://localhost:5173/login">log in</a> </p>
-                <p>{responseMessage}</p>
-            </form>
-        </div>
+        // <div>
+        //     <form onSubmit={(event) => handleRegister(event)}>
+        //         Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
+        //         Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
+        //         Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
+        //         <input type="submit" value="sign up"/>
+        //         <p>have an account- <a href="http://localhost:5173/login">log in</a> </p>
+        //         <p>{responseMessage}</p>
+        //     </form>
+        // </div>
+
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row>
+                <div className='text-center'>
+                    <h1>Register</h1>
+                </div>
+                <Col className='m-3 p-3 border border-5 border-light rounded'>
+                    <Form onSubmit={(event) => handleRegister(event)}>
+                        <Form.Group className='mb-3' controlId='formLogin'>
+                            <Form.Label>Login</Form.Label>
+                            <Form.Control value={loginController} onChange={event => setLoginController(event.target.value)} type='text' placeholder='Enter login' />
+                        </Form.Group>
+                        <Form.Group className='mb-3' controlId='formPassword'>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control value={passwordController} onChange={event => passChanger(event)} type='password' placeholder='Password' />
+                            <Form.Text>Power:</Form.Text>
+                            <ProgressBar now={passwordPower} max={6}/>
+                        </Form.Group>
+                        <Form.Group className='mb-3' controlId='repeatPassword'>
+                            <Form.Label>Repeat password</Form.Label>
+                            <Form.Control value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} type='password' placeholder='Password' />
+                            <Form.Text className='text-danger'>{passwordController.length > 0 && passwordController != secondPasswordController && 'Passwords have to be the same' }</Form.Text>
+                        </Form.Group>
+                        <Button className='w-100' variant='success' type='submit'>
+                            Sign up
+                        </Button>
+                        <Form.Group className='text-center m-1'>
+                            <Form.Text id='logInLink'>
+                                Have an account? <a href="http://localhost:5173/login">Log in</a>
+                            </Form.Text>
+                            <br></br>
+                            <Form.Text className='text-danger' id='responseMessage'>
+                                {responseMessage}
+                            </Form.Text>
+                        </Form.Group>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 export default Register
