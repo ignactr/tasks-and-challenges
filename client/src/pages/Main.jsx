@@ -28,10 +28,8 @@ function Main() {
       }
     });
   };
-  const getUserName = async (userId) => {
-    await axios.post('http://localhost:5000/api/getNameFromId', {
-      userId: userId,
-    },{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
+  const getUserName = async () => {
+    await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
       if (response.status === 207) {
         setUser([response.data.userId,response.data.login]);
       }
@@ -63,7 +61,7 @@ function Main() {
     <div>
       <h1>Challenges</h1>
       <h2>ilość rekordów: {challenges.length}</h2>
-      <p><button>zalogowany: {user[1]}</button></p>
+      <p><button>zalogowany: {user[1]}</button><button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
       <p><button>Wolne</button><button>Zamieszczone przez ciebie</button><button>Wszystkie</button></p>
       <hr/>
       <ul>

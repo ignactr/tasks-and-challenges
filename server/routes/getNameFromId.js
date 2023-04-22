@@ -5,18 +5,12 @@ const logCheck = require('../middlewares/logCheck');
 
 router.post('/',logCheck,async (req, res) => {
     try {
-        const loggedUserId = req.userId;
-        const userId = req.body.userId;
+        const userId = req.userId;
         const user = await users.findById(userId);
-        if(loggedUserId != userId){
-            res.status(401).json({ error: 'Unauthorized' });
+        if (!user) {
+            res.status(410).json({ error: 'No user found' })
         }
-        else{
-            if (!user) {
-                res.status(410).json({ error: 'No user found' })
-            }
-            res.status(207).send({userId,login: user.login});
-        }
+        res.status(207).send({userId,login: user.login, karma: user.karma});
     } catch (error) {
         console.log(error);
         if (error.response.status === 401) {

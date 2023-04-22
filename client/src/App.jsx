@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Main from './pages/Main';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import NotLogged from './pages/notLogged';
+import NotLogged from './pages/NotLogged';
+import AddNewChallenge from './pages/AddNewChallenge';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
         <Route path="/notlogged" element={<NotLogged />}/>
+        <Route path="/addNewChallenge" element={<AddNewChallenge />}/>
       </Routes>
     </BrowserRouter>
   )
