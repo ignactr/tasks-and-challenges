@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -14,15 +15,26 @@ function Register(){
     const [passwordPower, setPasswordPower] = useState(0);
     const [responseMessage, setResponseMessage] = useState('');
 
+    const navigateTo = useNavigate();
+
     const handleRegister = async (event) => {
         event.preventDefault();
         await axios.post('http://localhost:5000/api/handleRegistration', {
             login: loginController,
             password: passwordController,
-        }).then(response => {
+        }).then((response) => {
             if (response.status === 201) {
-                setResponseMessage('User added');
+                axios.post('http://localhost:5000/api/login', {
+            login: loginController,
+            password: passwordController,
+        }).then(response => {
+            if (response.status === 200) {
+                localStorage.setItem('accessToken',response.data.token);
+                navigateTo('../');
             }
+        })
+            }
+            //--------------------
         }).catch(error => {
             if (error.response && error.response.status === 409) {
                 setResponseMessage('User with the same login already exists');

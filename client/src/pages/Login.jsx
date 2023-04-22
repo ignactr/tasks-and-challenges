@@ -23,7 +23,6 @@ function Login(){
             if (response.status === 200) {
                 localStorage.setItem('accessToken',response.data.token);
                 navigateTo('../');
-                //setResponseMessage('Logged in');
             }
             else if(response.status === 410){
                 setResponseMessage('No user found');
