@@ -4,20 +4,22 @@ import { useNavigate } from 'react-router-dom';
 
 function Main() {
   const [challenges, setChallenges] = useState([]);
-  const [buttonState, setButtonState] = useState(false);
+  const [user, setUser] = useState([]);
 
   const navigateTo = useNavigate();
+  const token = localStorage.getItem('accessToken');
 
   const getChallenges = async () => {
-    const token = localStorage.getItem('accessToken');
     await axios.post('http://localhost:5000/api/showChallenges',null,
       {headers: {'Authorization': `Bearer ${token}`}}
-    ).then(response => {
+    ).then((response) => {
       //if user is logged in and there are no errors
       if (response.status === 207) {
         setChallenges(response.data.tasks);
+        getUserName(response.data.userId);
       }
     }).catch(error =>{
+      //if user is not authorized
       if (error.response && error.response.status === 401) {
         navigateTo('../notlogged');
       } 
@@ -26,6 +28,23 @@ function Main() {
       }
     });
   };
+  const getUserName = async (userId) => {
+    await axios.post('http://localhost:5000/api/getNameFromId', {
+      userId: userId,
+    },{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
+      if (response.status === 207) {
+        setUser([response.data.userId,response.data.login]);
+      }
+    }).catch(error =>{
+      //if user is not authorized
+      if (error.response && error.response.status === 401) {
+        navigateTo('../notlogged');
+      } 
+      else if (error.response && error.response.status === 500) {
+       console.log(error);
+      }
+    });
+  }
 
   function retry(){
     if(buttonState === true){
@@ -42,9 +61,11 @@ function Main() {
 
   return (
     <div>
-      <button onClick={retry}>Retry</button>
       <h1>Challenges</h1>
       <h2>ilość rekordów: {challenges.length}</h2>
+      <p><button>zalogowany: {user[1]}</button></p>
+      <p><button>Wolne</button><button>Zamieszczone przez ciebie</button><button>Wszystkie</button></p>
+      <hr/>
       <ul>
         {challenges.map(challenge => (
           <li key={challenge._id}>

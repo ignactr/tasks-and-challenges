@@ -34,7 +34,6 @@ function Register(){
             }
         })
             }
-            //--------------------
         }).catch(error => {
             if (error.response && error.response.status === 409) {
                 setResponseMessage('User with the same login already exists');
