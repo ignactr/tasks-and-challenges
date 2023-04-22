@@ -6,13 +6,14 @@ function AddNewChallenge() {
     const [user, setUser] = useState([]);
     const [titleController, setTitleController] = useState('');
     const [detailsController, setDetailsController] = useState('');
+    const [endDateController, setEndDateController] = useState('');
     const [pointsController, setPointsController] = useState(20);
     const [pointsWarning, setPointsWarning] = useState('');
 
     const navigateTo = useNavigate();
+    const token = localStorage.getItem('accessToken');
 
     const getUserName = async () => {
-        const token = localStorage.getItem('accessToken');
         await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
         if (response.status === 207) {
             setUser([response.data.userId,response.data.login,response.data.karma]);
@@ -37,9 +38,31 @@ function AddNewChallenge() {
             setPointsWarning('')
         }
     }
-    const handleSubmit = () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         if(user[2] <= pointsController-20){
-            
+            await axios.post('http://localhost:5000/api/addNewChallenge', {
+                author: user[1],
+                title: titleController,
+                details: detailsController,
+                endDate: endDateController,
+                points: pointsController
+            },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
+                if (response.status === 201) {
+                    navigateTo('../');
+                }
+            }).catch(error => {
+                if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                } 
+                else if (error.response && error.response.status === 300) {
+                    setResponseMessage('Wrong password');
+                }
+                else {
+                console.log(error);
+            }
+            });
+
         }
     }
     useEffect(()=>{
@@ -53,6 +76,7 @@ function AddNewChallenge() {
             <form onSubmit={(event) => handleSubmit(event)}>
             Title: <input value={titleController} onChange={event => setTitleController(event.target.value)} /><br/>
             Details: <input value={detailsController} onChange={event => setDetailsController(event.target.value)} /><br/>
+            Finish Date: <input type="datetime-local" value={endDateController} onChange={event => setEndDateController(event.target.value)} /><br/>
             Reward: <input type="number" value={pointsController} onChange={event => pointsChange(event)} />{pointsWarning}<br/>
                 <input type="submit" value="Add Challenge"/>
             </form>

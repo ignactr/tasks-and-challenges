@@ -13,11 +13,13 @@ const showChallenges = require('./routes/showChallenges.js')
 const handleRegistration = require('./routes/handleRegistration.js')
 const login = require('./routes/login.js')
 const getNameFromId = require('./routes/getNameFromId.js')
+const addNewChallenge = require('./routes/addNewChallenge.js')
 
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
 app.use('/api/login', login);
 app.use('/api/getNameFromId',getNameFromId);
+app.use('/api/addNewChallenge',addNewChallenge);
 
 //launching server
 const port = process.env.PORT || 5000;
