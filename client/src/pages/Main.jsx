@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom';
 function Element(props){
   const challenge = props.challenge;
   return (
-    <li key={challenge._id}>
-      <p>id: {challenge._id}</p>
+    <div key={challenge._id}>
+      <p>-------------------------------</p>
       <p>author: {challenge.author}</p>
       <p>title: {challenge.title}</p>
       <p>details: {challenge.details}</p>
-    </li>
+      <p>reward: {challenge.points}</p>
+      {challenge.challengeState === 0 && <button>Claim</button>}
+    </div>
   );
 }
 
@@ -28,6 +30,9 @@ function Main() {
   const available = challenges.filter(challenge =>{
     return challenge.challengeState === 0;
   });
+  const handleClaim = () => {
+
+  }
   const getChallenges = async () => {
     await axios.post('http://localhost:5000/api/showChallenges',null,
       {headers: {'Authorization': `Bearer ${token}`}}
@@ -73,11 +78,11 @@ function Main() {
       <p><button>zalogowany: {user[1]}</button><button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
       <p><button onClick={() => setFilter(1) }>Wolne</button><button onClick={() => setFilter(2) }>Zamieszczone przez ciebie</button><button onClick={() => setFilter(0) }>Wszystkie</button></p>
       <hr/>
-      <ul>
+      <div>
         {
           filter === 0 ? challenges.map(challenge => <Element challenge= {challenge}/>) : filter === 1 ? available.map(challenge => <Element challenge= {challenge}/>) : yours.map(challenge => <Element challenge= {challenge}/>)
         }
-      </ul>
+      </div>
     </div>
   )
 }

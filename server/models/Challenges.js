@@ -30,7 +30,7 @@ const challengeSchema = new mongoose.Schema({
     },
     challengeState: {
         type: Number,
-        default: 0 
+        default: 0 // 0 - available, 1 - taken, 2 - to verification, 3 - finished, 4 - expired
     },
     comment: {
         type: String,
