@@ -10,6 +10,7 @@ function AddNewChallenge() {
     const [pointsController, setPointsController] = useState(20);
     const [pointsWarning, setPointsWarning] = useState('');
 
+
     const navigateTo = useNavigate();
     const token = localStorage.getItem('accessToken');
 
@@ -40,7 +41,7 @@ function AddNewChallenge() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if(user[2] <= pointsController-20){
+        if(user[2] >= pointsController-20){
             await axios.post('http://localhost:5000/api/addNewChallenge', {
                 author: user[1],
                 title: titleController,

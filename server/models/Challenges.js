@@ -26,11 +26,11 @@ const challengeSchema = new mongoose.Schema({
     },
     points: {
         type: Number,
-        default: 20
+        default: 20 
     },
     challengeState: {
         type: Number,
-        default: 0
+        default: 0 
     },
     comment: {
         type: String,
