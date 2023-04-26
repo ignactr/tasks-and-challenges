@@ -11,7 +11,7 @@ function Element(props){
       <p>title: {challenge.title}</p>
       <p>details: {challenge.details}</p>
       <p>reward: {challenge.points}</p>
-      {challenge.challengeState === 0 && <button>Claim</button>}
+      {challenge.challengeState === 0 ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : <>claimed by {challenge.acceptedBy}</>}
     </div>
   );
 }
@@ -30,8 +30,19 @@ function Main() {
   const available = challenges.filter(challenge =>{
     return challenge.challengeState === 0;
   });
-  const handleClaim = () => {
-
+  const handleClaim = async (challenge) => {
+    await axios.post('http://localhost:5000/api/handleStateChange/claim',{
+      challengeId: challenge._id,
+      userLogin: user[1]
+    },{headers: {'Authorization': `Bearer ${token}`}}
+    ).then((response)=> {
+      if (response.status === 202) {
+        console.log('updated');
+        getChallenges();
+      }
+    }).catch((error) =>{
+      console.log(error);
+    });
   }
   const getChallenges = async () => {
     await axios.post('http://localhost:5000/api/showChallenges',null,
@@ -42,7 +53,7 @@ function Main() {
         setChallenges(response.data.tasks);
         getUserName(response.data.userId);
       }
-    }).catch(error =>{
+    }).catch((error) =>{
       //if user is not authorized
       if (error.response && error.response.status === 401) {
         navigateTo('../notlogged');
@@ -80,7 +91,7 @@ function Main() {
       <hr/>
       <div>
         {
-          filter === 0 ? challenges.map(challenge => <Element challenge= {challenge}/>) : filter === 1 ? available.map(challenge => <Element challenge= {challenge}/>) : yours.map(challenge => <Element challenge= {challenge}/>)
+          filter === 0 ? challenges.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>)
         }
       </div>
     </div>
