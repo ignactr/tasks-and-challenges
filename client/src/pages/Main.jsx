@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function Element(props){
+  const user = props.user;
   const challenge = props.challenge;
   return (
     <div key={challenge._id}>
@@ -11,7 +12,7 @@ function Element(props){
       <p>title: {challenge.title}</p>
       <p>details: {challenge.details}</p>
       <p>reward: {challenge.points}</p>
-      {challenge.challengeState === 0 ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : <>claimed by {challenge.acceptedBy}</>}
+      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : challenge.author != user[1] ? <>claimed by {challenge.acceptedBy}</> : <button>View details</button>}
     </div>
   );
 }
@@ -91,7 +92,7 @@ function Main() {
       <hr/>
       <div>
         {
-          filter === 0 ? challenges.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge}/>)
+          filter === 0 ? challenges.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
         }
       </div>
     </div>
