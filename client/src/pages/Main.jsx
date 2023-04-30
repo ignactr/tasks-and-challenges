@@ -12,7 +12,8 @@ function Element(props){
       <p>title: {challenge.title}</p>
       <p>details: {challenge.details}</p>
       <p>reward: {challenge.points}</p>
-      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : challenge.author != user[1] ? <>claimed by {challenge.acceptedBy}</> : <button>View details</button>}
+      {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}
+      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button>View details</button>}
     </div>
   );
 }
@@ -42,7 +43,11 @@ function Main() {
         getChallenges();
       }
     }).catch((error) =>{
-      console.log(error);
+      if (error.response && error.response.status === 401) {
+        navigateTo('../notlogged');
+      } else if (error.response && error.response.status === 500) {
+        console.log(error);
+       }
     });
   }
   const getChallenges = async () => {

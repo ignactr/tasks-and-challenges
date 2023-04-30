@@ -24,9 +24,6 @@ function Login(){
                 localStorage.setItem('accessToken',response.data.token);
                 navigateTo('../');
             }
-            else if(response.status === 410){
-                setResponseMessage('No user found');
-            }
             else if(response.status === 300){
                 setResponseMessage('Wrong password');
             }
@@ -45,16 +42,6 @@ function Login(){
     };
 
     return(
-        // <div>
-        //     <form onSubmit={(event) => handleLogin(event)}>
-        //         Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
-        //         Password: <input value={passwordController} onChange={event => setPasswordController(event.target.value)} /><br/>
-        //         <input type="submit" value="sign in"/>
-        //         <p>don't have an account- <a href="http://localhost:5173/register">sign up</a> </p>
-        //         <p>{responseMessage}</p>
-        //     </form>
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <div className='text-center'>

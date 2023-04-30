@@ -12,8 +12,12 @@ router.post('/claim',logCheck, async (req,res)=>{
         res.status(202).json({ message: 'Challenge`s state updated' });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Internal server error' });
+        if (error.response.status === 401) {
+            res.status(401).json({ message: 'Unauthorized' });
+        }else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
     }
 });
 

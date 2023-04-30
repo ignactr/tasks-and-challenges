@@ -10,7 +10,8 @@ router.post('/', async (req, res) => {
       const givenPassword = req.body.password;
       const user = await users.findOne({ login: givenLogin });
       if (!user) {
-        res.status(410).json({ error: 'No user found' })
+        res.status(410).json({ error: 'No user found' });
+        return;
       }
       const password = user.password;
       if (typeof givenPassword !== 'string' || typeof password !== 'string') {
