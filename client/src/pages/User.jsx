@@ -7,7 +7,7 @@ function DeleteUser(){
     const [responseMessage, setResponseMessage] = useState('');
 
     const navigateTo = useNavigate();
-    
+
     const handleDelete = async (event) =>{
         event.preventDefault();
         const token = localStorage.getItem('accessToken');
@@ -39,15 +39,65 @@ function DeleteUser(){
     }
     return(
         <form onSubmit={(event)=>handleDelete(event)}>
-            password: <input type="text" value={passwordController} onChange={(event)=>setPasswordController(event.target.value)}></input>
+            password: <input type="text" value={passwordController} onChange={(event)=>setPasswordController(event.target.value)}></input><br/>
             <input type="submit" value="delete"/>
             {responseMessage != '' && <p>{responseMessage}</p>}
         </form>
     );
 }
 function ChangePassword(){
+    const [oldPasswordController, setOldPasswordController]= useState('');
+    const [newPasswordController1, setNewPasswordController1]= useState('');
+    const [newPasswordController2, setNewPasswordController2]= useState('');
+    const [responseMessage, setResponseMessage] = useState('');
+
+    const navigateTo = useNavigate();
+
+    const handleChange = async (event) =>{
+        event.preventDefault();
+        if(newPasswordController1 === newPasswordController2){
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:5000/api/editUser/changePassword', {
+            oldPassword: oldPasswordController,
+            newPassword: newPasswordController1
+            },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
+                if (response.status === 205) {
+                    setResponseMessage('Password succesfully changed');
+                }
+            }).catch((error) => {
+                if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                } 
+                else if (error.response && error.response.status === 510) {
+                    setResponseMessage('Invalid password or hash');
+                }
+                else if (error.response && error.response.status === 400) {
+                    setResponseMessage('New password must be at least 6 characters long');
+                }
+                else if (error.response && error.response.status === 300) {
+                    setResponseMessage('Wrong password');
+                }
+                else if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                else {
+                    console.log(error);
+                }
+            }
+         );
+        }
+        else{
+            setResponseMessage('new passwords must be the same!')
+        }
+    }
     return(
-        <div>change password</div>
+        <form onSubmit={(event)=>handleChange(event)}>
+            old password: <input type="text" value={oldPasswordController} onChange={(event)=>setOldPasswordController(event.target.value)}></input><br/>
+            new password: <input type="text" value={newPasswordController1} onChange={(event)=>setNewPasswordController1(event.target.value)}></input><br/>
+            repeat new password: <input type="text" value={newPasswordController2} onChange={(event)=>setNewPasswordController2(event.target.value)}></input><br/>
+            <input type="submit" value="change password"/>
+            {responseMessage != '' && <p>{responseMessage}</p>}
+        </form>
     );
 }
 function User(){
