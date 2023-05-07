@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 const showChallenges = require('./routes/showChallenges.js')
 const handleRegistration = require('./routes/handleRegistration.js')
 const login = require('./routes/login.js')
-const getNameFromId = require('./routes/getNameFromId.js')
+const getUserFromId = require('./routes/getUserFromId.js')
 const addNewChallenge = require('./routes/addNewChallenge.js')
 const handleStateChange = require('./routes/handleStateChange.js')
 const isLogged = require('./routes/isLogged.js')
@@ -20,7 +20,7 @@ const isLogged = require('./routes/isLogged.js')
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
 app.use('/api/login', login);
-app.use('/api/getNameFromId',getNameFromId);
+app.use('/api/getUserFromId',getUserFromId);
 app.use('/api/addNewChallenge',addNewChallenge);
 app.use('/api/handleStateChange',handleStateChange);
 app.use('/api/isLogged',isLogged);

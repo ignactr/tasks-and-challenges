@@ -6,7 +6,7 @@ function Element(props){
   const user = props.user;
   const challenge = props.challenge;
   return (
-    <div key={challenge._id}>
+    <div>
       <p>-------------------------------</p>
       <p>author: {challenge.author}</p>
       <p>title: {challenge.title}</p>
@@ -58,7 +58,7 @@ function Main() {
       //if user is logged in and there are no errors
       if (response.status === 207) {
         setChallenges(response.data.tasks);
-        getUserName(response.data.userId);
+        getUser(response.data.userId);
       }
     }).catch((error) =>{
       //if user is not authorized
@@ -70,9 +70,9 @@ function Main() {
       }
     });
   };
-  const getUserName = async () => {
+  const getUser = async () => {
     const token = localStorage.getItem('accessToken');
-    await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
+    await axios.post('http://localhost:5000/api/getUserFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
       if (response.status === 207) {
         setUser([response.data.userId,response.data.login]);
       }
@@ -99,7 +99,7 @@ function Main() {
       <hr/>
       <div>
         {
-          filter === 0 ? challenges.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
+          filter === 0 ? challenges.map(challenge => <Element key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
         }
       </div>
     </div>
