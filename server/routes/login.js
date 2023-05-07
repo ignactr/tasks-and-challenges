@@ -21,6 +21,8 @@ router.post('/', async (req, res) => {
       const match = await bcrypt.compare(givenPassword, password);
       if (match) {
         const accessToken = jwt.sign({userId: user._id}, process.env.ACCESS_SECRET_KEY, {expiresIn: process.env.ACCESS_EXPIRY_TIME});
+        const newDate = new Date().toISOString() //get current date in mongodb date format
+        await users.findOneAndUpdate({ _id: user._id }, { lastLogged: newDate }, { new: true });
         res.status(200).json({ message: 'Successfully logged in', token: accessToken });
       } else {
         res.status(300).json({ error: 'Wrong password' });

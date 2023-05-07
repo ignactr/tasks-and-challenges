@@ -24,7 +24,6 @@ function Main() {
   const [filter, setFilter] = useState(0);
 
   const navigateTo = useNavigate();
-  const token = localStorage.getItem('accessToken');
 
   const yours = challenges.filter((challenge) =>{
     return challenge.author === user[1];
@@ -33,6 +32,7 @@ function Main() {
     return challenge.challengeState === 0;
   });
   const handleClaim = async (challenge) => {
+    const token = localStorage.getItem('accessToken');
     await axios.post('http://localhost:5000/api/handleStateChange/claim',{
       challengeId: challenge._id,
       userLogin: user[1]
@@ -51,6 +51,7 @@ function Main() {
     });
   }
   const getChallenges = async () => {
+    const token = localStorage.getItem('accessToken');
     await axios.post('http://localhost:5000/api/showChallenges',null,
       {headers: {'Authorization': `Bearer ${token}`}}
     ).then((response) => {
@@ -70,6 +71,7 @@ function Main() {
     });
   };
   const getUserName = async () => {
+    const token = localStorage.getItem('accessToken');
     await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
       if (response.status === 207) {
         setUser([response.data.userId,response.data.login]);
@@ -92,7 +94,7 @@ function Main() {
     <div>
       <h1>Challenges</h1>
       <h2>ilość rekordów: {challenges.length}</h2>
-      <p><button>zalogowany: {user[1]}</button><button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
+      <p><button onClick={()=> {navigateTo('../User')}}>zalogowany: {user[1]}</button><button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
       <p><button onClick={() => setFilter(1) }>Wolne</button><button onClick={() => setFilter(2) }>Zamieszczone przez ciebie</button><button onClick={() => setFilter(0) }>Wszystkie</button></p>
       <hr/>
       <div>

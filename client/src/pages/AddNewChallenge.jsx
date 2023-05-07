@@ -12,9 +12,9 @@ function AddNewChallenge() {
 
 
     const navigateTo = useNavigate();
-    const token = localStorage.getItem('accessToken');
 
     const getUserName = async () => {
+        const token = localStorage.getItem('accessToken');
         await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
         if (response.status === 207) {
             setUser([response.data.userId,response.data.login,response.data.karma]);
@@ -41,6 +41,8 @@ function AddNewChallenge() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const token = localStorage.getItem('accessToken');
+        
         if(user[2] >= pointsController-20){
             await axios.post('http://localhost:5000/api/addNewChallenge', {
                 author: user[1],

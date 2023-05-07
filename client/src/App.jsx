@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotLogged from './pages/NotLogged';
 import AddNewChallenge from './pages/AddNewChallenge';
+import User from './pages/User';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />}/>
         <Route path="/notlogged" element={<NotLogged />}/>
         <Route path="/addNewChallenge" element={<AddNewChallenge />}/>
+        <Route path="/user" element={<User />}/>
       </Routes>
     </BrowserRouter>
   )
