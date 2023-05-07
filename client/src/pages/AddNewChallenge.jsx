@@ -42,7 +42,7 @@ function AddNewChallenge() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('accessToken');
-        
+
         if(user[2] >= pointsController-20){
             await axios.post('http://localhost:5000/api/addNewChallenge', {
                 author: user[1],
@@ -63,9 +63,8 @@ function AddNewChallenge() {
                 }
                 else {
                 console.log(error);
-            }
+                }
             });
-
         }
     }
     useEffect(()=>{

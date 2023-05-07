@@ -2,8 +2,57 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+function DeleteUser(){
+    const [passwordController, setPasswordController]= useState('');
+    const [responseMessage, setResponseMessage] = useState('');
+
+    const navigateTo = useNavigate();
+    
+    const handleDelete = async (event) =>{
+        event.preventDefault();
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/editUser/delete', {
+            password: passwordController
+            },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
+                if (response.status === 205) {
+                    localStorage.removeItem('accessToken');
+                    navigateTo('../login');
+                }
+            }).catch((error) => {
+                if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                } 
+                else if (error.response && error.response.status === 510) {
+                    setResponseMessage('Invalid password or hash');
+                }
+                else if (error.response && error.response.status === 300) {
+                    setResponseMessage('Wrong password');
+                }
+                else if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                else {
+                    console.log(error);
+                }
+            }
+         );
+    }
+    return(
+        <form onSubmit={(event)=>handleDelete(event)}>
+            password: <input type="text" value={passwordController} onChange={(event)=>setPasswordController(event.target.value)}></input>
+            <input type="submit" value="delete"/>
+            {responseMessage != '' && <p>{responseMessage}</p>}
+        </form>
+    );
+}
+function ChangePassword(){
+    return(
+        <div>change password</div>
+    );
+}
 function User(){
     const [userInfo, setUserInfo] = useState({});
+    const [pageState, setPageState] = useState(0);
 
     const navigateTo = useNavigate();
 
@@ -27,6 +76,10 @@ function User(){
         }
     });
     }
+    const logOut = () =>{
+        localStorage.removeItem('accessToken');
+        navigateTo('../login');
+    }
     useEffect(()=>{
         getUserInfo();
     }, []);
@@ -39,6 +92,10 @@ function User(){
             <h6>user's karma: {userInfo['karma']}</h6>
             <h6>last logged in: {userInfo['lastLogged']}</h6>
             <h6>registered in: {userInfo['createDate']}</h6>
+            <p><button onClick={()=>{logOut()}}>log out</button><button onClick={()=>{setPageState(2)}}>change password</button><button onClick={()=>{setPageState(1)}}>delete account</button></p>
+            {
+                pageState === 1 ? <DeleteUser /> : pageState === 2 && <ChangePassword />
+            }
         </div>
     );
 }

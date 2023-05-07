@@ -16,6 +16,7 @@ const getUserFromId = require('./routes/getUserFromId.js')
 const addNewChallenge = require('./routes/addNewChallenge.js')
 const handleStateChange = require('./routes/handleStateChange.js')
 const isLogged = require('./routes/isLogged.js')
+const editUser = require('./routes/editUser.js')
 
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
@@ -24,6 +25,7 @@ app.use('/api/getUserFromId',getUserFromId);
 app.use('/api/addNewChallenge',addNewChallenge);
 app.use('/api/handleStateChange',handleStateChange);
 app.use('/api/isLogged',isLogged);
+app.use('/api/editUser',editUser);
 
 //launching server
 const port = process.env.PORT || 5000;

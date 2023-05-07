@@ -3,7 +3,7 @@ const router = express.Router();
 const users = require('../models/Users');
 const logCheck = require('../middlewares/logCheck');
 
-router.post('/',logCheck,async (req, res) => {
+router.post('/',logCheck, async (req, res) => {
     try {
         const userId = req.userId;
         const user = await users.findById(userId);
@@ -36,7 +36,7 @@ router.post('/extended',logCheck,async (req, res) => {
         lastLogged: user.lastLogged,
       });
   } catch (error) {
-      console.log(error);
+      //console.log(error);
       if (error.response.status === 401) {
         res.status(401).json({ message: 'Unauthorized' });
       } else {
