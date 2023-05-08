@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const users = require('../models/Users');
+const challenges = require('../models/Challenges')
 const bcrypt = require('bcrypt');
 const logCheck = require('../middlewares/logCheck');
 
-//to do: after deleting an account, all tasks of this account should be deleted, too
 router.post('/delete',logCheck, async (req,res) => {
     try{
         const userId = req.userId;
@@ -20,8 +20,10 @@ router.post('/delete',logCheck, async (req,res) => {
             return;
         }
         const match = await bcrypt.compare(givenPassword, password);
-        if (match) {
+        if (match) { 
+            const deletedAuthor = user.login;
             await users.findOneAndRemove({ _id: userId }, { new: true });
+            await challenges.deleteMany({$and: [{author: deletedAuthor}, {challengeState: {$ne: 3}}]});
             res.status(205).json({ message: 'Successfully deleted'}); //205 successfully deleted account
         } else {
             res.status(300).json({ error: 'Wrong password' }); //300 wrong password
