@@ -15,7 +15,7 @@ function AddNewChallenge() {
 
     const getUserName = async () => {
         const token = localStorage.getItem('accessToken');
-        await axios.post('http://localhost:5000/api/getNameFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
+        await axios.post('http://localhost:5000/api/getUserFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
         if (response.status === 207) {
             setUser([response.data.userId,response.data.login,response.data.karma]);
         }
