@@ -80,7 +80,7 @@ function AddNewChallenge() {
             Details: <input value={detailsController} onChange={event => setDetailsController(event.target.value)} /><br/>
             Finish Date: <input type="datetime-local" value={endDateController} onChange={event => setEndDateController(event.target.value)} /><br/>
             Reward: <input type="number" value={pointsController} onChange={event => pointsChange(event)} />{pointsWarning}<br/>
-                <input type="submit" value="Add Challenge"/>
+            <p><button onClick={()=>{navigateTo('../')}}>go back</button><input type="submit" value="Add Challenge"/></p>
             </form>
         </div>
     );

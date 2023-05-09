@@ -40,7 +40,6 @@ function ShowChallenges(props){
     },{headers: {'Authorization': `Bearer ${token}`}}
     ).then((response)=> {
       if (response.status === 202) {
-        console.log('updated');
         getChallenges();
       }
     }).catch((error) =>{
