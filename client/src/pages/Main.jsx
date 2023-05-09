@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Details from './Details';
 
 function Element(props){
   const user = props.user;
@@ -13,12 +14,12 @@ function Element(props){
       <p>details: {challenge.details}</p>
       <p>reward: {challenge.points}</p>
       {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}
-      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button>View details</button>}
+      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button onClick={() => props.handleChangeState(challenge._id)}>View details</button>}
     </div>
   );
 }
 
-function Main() {
+function ShowChallenges(props){
   const [challenges, setChallenges] = useState([]);
   const [user, setUser] = useState([]);
   const [filter, setFilter] = useState(0);
@@ -99,10 +100,27 @@ function Main() {
       <hr/>
       <div>
         {
-          filter === 0 ? challenges.map(challenge => <Element key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
+          filter === 0 ? challenges.map(challenge => <Element handleChangeState={props.handleChangeState} key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
         }
       </div>
     </div>
+  )
+}
+
+function Main(){
+  const [subPage, setSubPage] = useState(0);
+  const [id, setId] = useState('');
+
+  const handleChangeState = (id) =>{
+
+    setSubPage(1);
+    setId(id);
+  }
+
+  return (
+    <>
+    {subPage === 0 ? <ShowChallenges handleChangeState = {handleChangeState}/> : <Details setSubPage={setSubPage} id={id}/>}
+    </>
   )
 }
   
