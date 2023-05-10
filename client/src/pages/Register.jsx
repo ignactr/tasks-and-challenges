@@ -14,10 +14,21 @@ function Register(){
     const [secondPasswordController, setSecondPasswordController] = useState('');
     const [passwordPower, setPasswordPower] = useState(0);
     const [responseMessage, setResponseMessage] = useState('');
+    const [validated, setValidated] = useState(false);
 
     const navigateTo = useNavigate();
 
     const handleRegister = async (event) => {
+        // form validation
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        }
+
+        setValidated(true);
+
+
         event.preventDefault();
         await axios.post('http://localhost:5000/api/handleRegistration', {
             login: loginController,
@@ -88,21 +99,47 @@ function Register(){
                     <h1>Register</h1>
                 </div>
                 <Col className='m-3 p-3 border border-5 border-light rounded'>
-                    <Form onSubmit={(event) => handleRegister(event)}>
+                    <Form noValidate validated={validated} onSubmit={(event) => handleRegister(event)}>
                         <Form.Group className='mb-3' controlId='formLogin'>
                             <Form.Label>Login</Form.Label>
-                            <Form.Control value={loginController} onChange={event => setLoginController(event.target.value)} type='text' placeholder='Enter login' />
+                            <Form.Control 
+                                value={loginController} 
+                                onChange={event => setLoginController(event.target.value)} 
+                                type='text' 
+                                placeholder='Enter login' 
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a login.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
-                            <Form.Control value={passwordController} onChange={event => passChanger(event)} type='password' placeholder='Password' />
+                            <Form.Control 
+                                value={passwordController} 
+                                onChange={event => passChanger(event)} 
+                                type='password' 
+                                placeholder='Password' 
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a password.
+                            </Form.Control.Feedback>
                             <Form.Text>Power:</Form.Text>
                             <ProgressBar now={passwordPower} max={6}/>
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='repeatPassword'>
                             <Form.Label>Repeat password</Form.Label>
-                            <Form.Control value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} type='password' placeholder='Password' />
-                            <Form.Text className='text-danger'>{passwordController.length > 0 && passwordController != secondPasswordController && 'Passwords have to be the same' }</Form.Text>
+                            <Form.Control 
+                                value={secondPasswordController} 
+                                onChange={event => setSecondPasswordController(event.target.value)} 
+                                type='password' 
+                                placeholder='Password' 
+                                required 
+                            />
+                            <Form.Text className='text-danger'>
+                                {passwordController.length > 0 && passwordController != secondPasswordController && 'Passwords have to be the same.' }
+                            </Form.Text>
                         </Form.Group>
                         <Button className='w-100' variant='success' type='submit'>
                             Sign up

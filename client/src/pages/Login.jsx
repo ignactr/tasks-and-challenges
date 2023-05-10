@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
@@ -11,10 +11,21 @@ function Login(){
     const [loginController, setLoginController] = useState('');
     const [passwordController, setPasswordController] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
+    const [validated, setValidated] = useState(false);
 
     const navigateTo = useNavigate();
 
     const handleLogin = async (event) => {
+        // form validation
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+    
+        setValidated(true);
+
+
         event.preventDefault();
         await axios.post('http://localhost:5000/api/login', {
             login: loginController,
@@ -48,14 +59,32 @@ function Login(){
                     <h1>Tasks and Challenges</h1>
                 </div>
                 <Col className='m-3 p-3 border border-5 border-light rounded'>
-                    <Form onSubmit={(event) => handleLogin(event)}>
+                    <Form noValidate validated={validated} onSubmit={(event) => handleLogin(event)}>
                         <Form.Group className='mb-3' controlId='formLogin'>
                             <Form.Label>Login</Form.Label>
-                            <Form.Control value={loginController} onChange={event => setLoginController(event.target.value)} type='text' placeholder='Enter login' />
+                            <Form.Control 
+                                value={loginController} 
+                                onChange={event => setLoginController(event.target.value)} 
+                                type='text' 
+                                placeholder='Enter login' 
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a login.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
-                            <Form.Control value={passwordController} onChange={event => setPasswordController(event.target.value)} type='password' placeholder='Password' />
+                            <Form.Control 
+                                value={passwordController} 
+                                onChange={event => setPasswordController(event.target.value)} 
+                                type='password' 
+                                placeholder='Enter password' 
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a password.
+                            </Form.Control.Feedback>
                         </Form.Group>
                         <Button className='w-100' variant='success' type='submit'>
                             Sign in

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Main from './pages/Main';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import NotLogged from './pages/NotLogged';
+import NotLogged from './pages/notLogged';
 import AddNewChallenge from './pages/AddNewChallenge';
 import User from './pages/User';
 
