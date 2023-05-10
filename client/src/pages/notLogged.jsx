@@ -28,13 +28,13 @@ function NotLogged() {
                 </div>
                 
                 <Col className='d-flex justify-content-end'>
-                    <Button onClick={logIn} className='w-25' variant='success' type='submit'>
+                    <Button onClick={logIn} className='w-25 border border-3 border-secondary-subtle' variant='light' type='submit'>
                         Log in
                     </Button>
                 </Col>
 
                 <Col className='d-flex justify-content-start'>
-                    <Button onClick={signUp} className='w-25' variant='primary' type='submit'>
+                    <Button onClick={signUp} className='w-25' variant='success' type='submit'>
                         Sign up
                     </Button>
                 </Col>

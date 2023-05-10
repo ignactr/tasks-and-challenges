@@ -122,7 +122,7 @@ function Register(){
                                 value={passwordController} 
                                 onChange={event => passChanger(event)} 
                                 type='password' 
-                                placeholder='Password' 
+                                placeholder='Enter password' 
                                 maxLength={50} // TBD
                                 required 
                             />
@@ -139,7 +139,7 @@ function Register(){
                                 value={secondPasswordController} 
                                 onChange={event => setSecondPasswordController(event.target.value)} 
                                 type='password' 
-                                placeholder='Password' 
+                                placeholder='Reenter password' 
                                 maxLength={50} // TBD
                                 required 
                             />
