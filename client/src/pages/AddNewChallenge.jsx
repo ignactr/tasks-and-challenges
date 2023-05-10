@@ -1,6 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 function AddNewChallenge() {
     const [user, setUser] = useState([]);
@@ -9,6 +14,7 @@ function AddNewChallenge() {
     const [endDateController, setEndDateController] = useState('');
     const [pointsController, setPointsController] = useState(20);
     const [pointsWarning, setPointsWarning] = useState('');
+    const [validated, setValidated] = useState(false);
 
 
     const navigateTo = useNavigate();
@@ -40,6 +46,16 @@ function AddNewChallenge() {
         }
     }
     const handleSubmit = async (event) => {
+        // form validation
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        }
+
+        setValidated(true);
+
+
         event.preventDefault();
         const token = localStorage.getItem('accessToken');
 
@@ -72,17 +88,110 @@ function AddNewChallenge() {
       }, []);
 
     return (
-        <div>
-            <h2>Add new Challenge</h2>
-            <b>karma of user {user[1]}: {user[2]}</b>
-            <form onSubmit={(event) => handleSubmit(event)}>
-            Title: <input value={titleController} onChange={event => setTitleController(event.target.value)} /><br/>
-            Details: <input value={detailsController} onChange={event => setDetailsController(event.target.value)} /><br/>
-            Finish Date: <input type="datetime-local" value={endDateController} onChange={event => setEndDateController(event.target.value)} /><br/>
-            Reward: <input type="number" value={pointsController} onChange={event => pointsChange(event)} />{pointsWarning}<br/>
-            <p><button onClick={()=>{navigateTo('../')}}>go back</button><input type="submit" value="Add Challenge"/></p>
-            </form>
-        </div>
+        // <div>
+        //     <h2>Add new Challenge</h2>
+        //     <b>karma of user {user[1]}: {user[2]}</b>
+        //     <form onSubmit={(event) => handleSubmit(event)}>
+        //     Title: <input value={titleController} onChange={event => setTitleController(event.target.value)} /><br/>
+        //     Details: <input value={detailsController} onChange={event => setDetailsController(event.target.value)} /><br/>
+        //     Finish Date: <input type="datetime-local" value={endDateController} onChange={event => setEndDateController(event.target.value)} /><br/>
+        //     Reward: <input type="number" value={pointsController} onChange={event => pointsChange(event)} />{pointsWarning}<br/>
+        //     <p><button onClick={()=>{navigateTo('../')}}>go back</button><input type="submit" value="Add Challenge"/></p>
+        //     </form>
+        // </div>
+
+        <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
+            <Row>
+                <div className='text-center'>
+                    <h2>Add a new challenge</h2>
+                    <Form.Text className='fw-bold'>Karma of user {user[1]}: {user[2]}</Form.Text>
+                </div>
+                <Col className='m-3 p-3 border border-5 border-light rounded'>
+                    <Form noValidate validated={validated} onSubmit={(event) => handleSubmit(event)}>
+
+                        <Form.Group className='mb-3' controlId='formTitle'>
+                            <Form.Label>Title</Form.Label>
+                            <Form.Control 
+                                value={titleController} 
+                                onChange={event => setTitleController(event.target.value)} 
+                                type='text' 
+                                placeholder='Enter title' 
+                                maxLength={200} // TBD
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide a valid title.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group className='mb-3' controlId='formDetails'>
+                            <Form.Label>Details</Form.Label>
+                            <Form.Control 
+                                as='textarea'
+                                rows={5}
+                                value={detailsController} 
+                                onChange={event => setDetailsController(event.target.value)}
+                                type='text' 
+                                placeholder='Write a detailed explanation of the task...' 
+                                // maxLength={1000} TBD based on db settings
+                                required 
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                Please provide details.
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Row>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formFinishDate'>
+                                    <Form.Label>Finish date</Form.Label>
+                                    <Form.Control 
+                                        type="datetime-local" 
+                                        value={endDateController} 
+                                        onChange={event => setEndDateController(event.target.value)} 
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a finish date. Don't forget to specify time.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                            </Col>
+                            <Col>
+                                <Form.Group className='mb-3' controlId='formRewardPoints'>
+                                    <Form.Label>Reward</Form.Label>
+                                    <Form.Control 
+                                        type="number" 
+                                        min={0}
+                                        value={pointsController} 
+                                        onChange={event => pointsChange(event)}
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a valid number of reward points.
+                                    </Form.Control.Feedback>
+                                    <Form.Text className='text-warning'>
+                                        {pointsWarning}
+                                    </Form.Text>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col>
+                                <Button onClick={()=>{navigateTo('../')}} className='w-100' variant='danger'>
+                                    Go back
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button className='w-100' variant='success' type='submit'>
+                                    Add challenge
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     );
 }
 

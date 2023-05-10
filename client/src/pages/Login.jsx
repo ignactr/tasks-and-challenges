@@ -60,6 +60,7 @@ function Login(){
                 </div>
                 <Col className='m-3 p-3 border border-5 border-light rounded'>
                     <Form noValidate validated={validated} onSubmit={(event) => handleLogin(event)}>
+
                         <Form.Group className='mb-3' controlId='formLogin'>
                             <Form.Label>Login</Form.Label>
                             <Form.Control 
@@ -67,12 +68,14 @@ function Login(){
                                 onChange={event => setLoginController(event.target.value)} 
                                 type='text' 
                                 placeholder='Enter login' 
+                                maxLength={50} // TBD based on db settings
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
-                                Please provide a login.
+                                Please provide a valid login.
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control 
@@ -80,15 +83,18 @@ function Login(){
                                 onChange={event => setPasswordController(event.target.value)} 
                                 type='password' 
                                 placeholder='Enter password' 
+                                maxLength={50} // TBD
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
-                                Please provide a password.
+                                Please provide a valid password.
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Button className='w-100' variant='success' type='submit'>
                             Sign in
                         </Button>
+
                         <Form.Group className='text-center m-1'>
                             <Form.Text id='signUpLink'>
                                 Don't have an account? <a href='http://localhost:5173/register'>Sign up</a>
@@ -98,6 +104,7 @@ function Login(){
                                 {responseMessage}
                             </Form.Text>
                         </Form.Group>
+                        
                     </Form>
                 </Col>
             </Row>

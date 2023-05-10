@@ -100,6 +100,7 @@ function Register(){
                 </div>
                 <Col className='m-3 p-3 border border-5 border-light rounded'>
                     <Form noValidate validated={validated} onSubmit={(event) => handleRegister(event)}>
+
                         <Form.Group className='mb-3' controlId='formLogin'>
                             <Form.Label>Login</Form.Label>
                             <Form.Control 
@@ -107,12 +108,14 @@ function Register(){
                                 onChange={event => setLoginController(event.target.value)} 
                                 type='text' 
                                 placeholder='Enter login' 
+                                maxLength={50} // TBD
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
-                                Please provide a login.
+                                Please provide a valid login.
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group className='mb-3' controlId='formPassword'>
                             <Form.Label>Password</Form.Label>
                             <Form.Control 
@@ -120,14 +123,16 @@ function Register(){
                                 onChange={event => passChanger(event)} 
                                 type='password' 
                                 placeholder='Password' 
+                                maxLength={50} // TBD
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
-                                Please provide a password.
+                                Please provide a valid password.
                             </Form.Control.Feedback>
                             <Form.Text>Power:</Form.Text>
                             <ProgressBar now={passwordPower} max={6}/>
                         </Form.Group>
+
                         <Form.Group className='mb-3' controlId='repeatPassword'>
                             <Form.Label>Repeat password</Form.Label>
                             <Form.Control 
@@ -135,15 +140,18 @@ function Register(){
                                 onChange={event => setSecondPasswordController(event.target.value)} 
                                 type='password' 
                                 placeholder='Password' 
+                                maxLength={50} // TBD
                                 required 
                             />
                             <Form.Text className='text-danger'>
                                 {passwordController.length > 0 && passwordController != secondPasswordController && 'Passwords have to be the same.' }
                             </Form.Text>
                         </Form.Group>
+
                         <Button className='w-100' variant='success' type='submit'>
                             Sign up
                         </Button>
+
                         <Form.Group className='text-center m-1'>
                             <Form.Text id='logInLink'>
                                 Have an account? <a href="http://localhost:5173/login">Log in</a>
@@ -153,6 +161,7 @@ function Register(){
                                 {responseMessage}
                             </Form.Text>
                         </Form.Group>
+                        
                     </Form>
                 </Col>
             </Row>
