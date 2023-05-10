@@ -45,7 +45,7 @@ function Details(props){
         <div>
             <p><button onClick={()=>props.setSubPage(0)}>go back</button><button onClick={()=>setSubPage(0)}>Details</button><button onClick={()=>setSubPage(1)}>Conversation</button></p>
             {
-            subPage === 1 ? <Conversation /> : 
+            subPage === 1 ? <Conversation challengeId={props.id}/> : 
             <div>
                 <h2>Details</h2>
                 <p>author: {details.author}</p>
@@ -56,15 +56,24 @@ function Details(props){
                 <p>reward: {details.points}</p>
                 <p>state: {details.challengeState === 0 ? 'available': details.challengeState === 1 ? 'claimed' : details.challengeState === 2 ? 'to verification' : details.challengeState === 3 ? 'finished' : 'expired'}</p>
                 {(details.acceptedBy != '' && details.acceptedBy != null) && <p>Accepted By: {details.acceptedBy}</p>}
+                {responseMessage != '' && <p>{responseMessage}</p>}
+
             </div>
             }
         </div>
     )
 }
-function Conversation(){
+function Conversation(props){
+    const [messageController,setMessageController] = useState('') 
+
     return (
         <div>
             <h2>Conversation</h2>
+            <p>id: {props.challengeId}</p>
+            <form onSubmit={(event)=>{}}>
+                Message: <input type="text" value= {messageController} onChange={(event)=>setMessageController(event.target.value)}></input>
+                <input type="submit" value="Send"/>
+            </form>
         </div>
     )
 }

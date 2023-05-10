@@ -9,8 +9,8 @@ function Element(props){
   return (
     <div>
       <p>-------------------------------</p>
+      <h6>title: {challenge.title}</h6>
       <p>author: {challenge.author}</p>
-      <p>title: {challenge.title}</p>
       <p>details: {challenge.details}</p>
       <p>reward: {challenge.points}</p>
       {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}

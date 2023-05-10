@@ -18,16 +18,18 @@ const handleStateChange = require('./routes/handleStateChange.js')
 const isLogged = require('./routes/isLogged.js')
 const editUser = require('./routes/editUser.js')
 const details = require('./routes/details.js')
+const conversation = require('./routes/conversation.js')
 
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
 app.use('/api/login', login);
-app.use('/api/getUserFromId',getUserFromId);
-app.use('/api/addNewChallenge',addNewChallenge);
-app.use('/api/handleStateChange',handleStateChange);
-app.use('/api/isLogged',isLogged);
-app.use('/api/editUser',editUser);
-app.use('/api/details',details);
+app.use('/api/getUserFromId', getUserFromId);
+app.use('/api/addNewChallenge', addNewChallenge);
+app.use('/api/handleStateChange', handleStateChange);
+app.use('/api/isLogged', isLogged);
+app.use('/api/editUser', editUser);
+app.use('/api/details', details);
+app.use('/api/conversation', conversation);
 
 //launching server
 const port = process.env.PORT || 5000;
