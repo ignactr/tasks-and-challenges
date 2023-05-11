@@ -178,7 +178,7 @@ function AddNewChallenge() {
 
                         <Row>
                             <Col>
-                                <Button onClick={()=>{navigateTo('../')}} className='w-100' variant='danger'>
+                                <Button onClick={()=>{navigateTo('../')}} className='w-100' variant='secondary'>
                                     Go back
                                 </Button>
                             </Col>

@@ -79,7 +79,7 @@ function DeleteUser(){
                 </Form.Control.Feedback>
             </Form.Group>
 
-            <Button className='w-100 border border-2 border-danger text-danger' variant='light' type='submit'>
+            <Button className='w-100' variant='outline-danger' type='submit'>
                 Delete account
             </Button>
 

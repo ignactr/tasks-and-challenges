@@ -2,6 +2,15 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Details from './Details';
+import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 function Element(props){
   const user = props.user;
@@ -91,18 +100,75 @@ function ShowChallenges(props){
   }, []);
 
   return (
-    <div>
-      <h1>Challenges</h1>
-      <h2>ilość rekordów: {challenges.length}</h2>
-      <p><button onClick={()=> {navigateTo('../User')}}>zalogowany: {user[1]}</button><button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
-      <p><button onClick={() => setFilter(1) }>Wolne</button><button onClick={() => setFilter(2) }>Zamieszczone przez ciebie</button><button onClick={() => setFilter(0) }>Wszystkie</button></p>
-      <hr/>
-      <div>
-        {
-          filter === 0 ? challenges.map(challenge => <Element handleChangeState={props.handleChangeState} key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
-        }
-      </div>
-    </div>
+    // <div>
+    //   <h1>Challenges</h1>
+    //   <p><button onClick={()=> {navigateTo('../User')}}>zalogowany: {user[1]}</button>
+    //   <button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
+    //   <p><button onClick={() => setFilter(1) }>Wolne</button>
+    //   <button onClick={() => setFilter(2) }>Zamieszczone przez ciebie</button>
+    //   <button onClick={() => setFilter(0) }>Wszystkie</button></p>
+    //   <hr/>
+    //   <div>
+    //     {
+    //       filter === 0 ? challenges.map(challenge => <Element handleChangeState={props.handleChangeState} key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
+    //     }
+    //   </div>
+    // </div>
+
+    <>
+      <Navbar bg='light' variant='light'>
+        <Container>
+          <Navbar.Brand href='#'>Tasks and Challenges</Navbar.Brand>
+          <Nav className='me-auto'>
+            <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
+          </Nav>
+          <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'>+ Add challenge</Button>
+        </Container>
+      </Navbar>
+
+      <Container>
+        <Tabs
+          defaultActiveKey='all'
+          id='challenge-filter-tab'
+          className='mb-3'
+        >
+          <Tab onClick={() => setFilter(0) } eventKey='all' title='All'>
+            {
+              filter === 0 ? 
+              challenges.map(challenge => 
+                <Element 
+                  handleChangeState={props.handleChangeState} 
+                  key={challenge._id} 
+                  handleClaim={handleClaim} 
+                  challenge={challenge} 
+                  user={user}
+                  />
+              ) : filter === 1 ? 
+              available.map(challenge => 
+                <Element 
+                  handleClaim={handleClaim} 
+                  challenge=
+                  {challenge} 
+                  user={user}
+                />
+              ) : yours.map(challenge => 
+                <Element 
+                  handleClaim={handleClaim} 
+                  challenge={challenge} 
+                  user={user}
+                />
+              )
+            }
+          </Tab>
+          <Tab onClick={() => setFilter(1) } eventKey='available' title='Available'>
+            b
+          </Tab>
+          <Tab onClick={() => setFilter(2) } eventKey='createdbu' title='Created by you'>
+            c
+          </Tab>
+        </Tabs>
+      </Container>
+    </>
   )
 }
 
