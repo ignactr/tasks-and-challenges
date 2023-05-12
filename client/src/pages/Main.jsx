@@ -31,7 +31,7 @@ function Element(props){
 function ShowChallenges(props){
   const [challenges, setChallenges] = useState([]);
   const [user, setUser] = useState([]);
-  const [filter, setFilter] = useState(0);
+  // const [filter, setFilter] = useState(0); filtering replaced by Bootstrap tabs
 
   const navigateTo = useNavigate();
 
@@ -118,7 +118,7 @@ function ShowChallenges(props){
     <>
       <Navbar bg='light' variant='light'>
         <Container>
-          <Navbar.Brand href='#'>Tasks and Challenges</Navbar.Brand>
+          <Navbar.Brand onClick={()=>{navigateTo('../')}}>Tasks and Challenges</Navbar.Brand>
           <Nav className='me-auto'>
             <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
           </Nav>
@@ -126,45 +126,41 @@ function ShowChallenges(props){
         </Container>
       </Navbar>
 
-      <Container>
+      <Container className='pt-4'>
         <Tabs
           defaultActiveKey='all'
           id='challenge-filter-tab'
           className='mb-3'
+          justify
         >
-          <Tab onClick={() => setFilter(0) } eventKey='all' title='All'>
-            {
-              filter === 0 ? 
-              challenges.map(challenge => 
-                <Element 
-                  handleChangeState={props.handleChangeState} 
-                  key={challenge._id} 
-                  handleClaim={handleClaim} 
-                  challenge={challenge} 
-                  user={user}
-                  />
-              ) : filter === 1 ? 
-              available.map(challenge => 
-                <Element 
-                  handleClaim={handleClaim} 
-                  challenge=
-                  {challenge} 
-                  user={user}
-                />
-              ) : yours.map(challenge => 
-                <Element 
-                  handleClaim={handleClaim} 
-                  challenge={challenge} 
-                  user={user}
-                />
-              )
-            }
+          <Tab eventKey='all' title='All'>
+            {challenges.map(challenge => 
+              <Element 
+                handleChangeState={props.handleChangeState} 
+                key={challenge._id} 
+                handleClaim={handleClaim} 
+                challenge={challenge} 
+                user={user}
+              />
+            )}
           </Tab>
-          <Tab onClick={() => setFilter(1) } eventKey='available' title='Available'>
-            b
+          <Tab eventKey='available' title='Available'>
+            {available.map(challenge => 
+              <Element 
+                handleClaim={handleClaim} 
+                challenge={challenge} 
+                user={user}
+              />
+            )}
           </Tab>
-          <Tab onClick={() => setFilter(2) } eventKey='createdbu' title='Created by you'>
-            c
+          <Tab eventKey='yours' title='Your challenges'>
+            {yours.map(challenge => 
+              <Element 
+                handleClaim={handleClaim} 
+                challenge={challenge} 
+                user={user}
+              />
+            )}
           </Tab>
         </Tabs>
       </Container>
