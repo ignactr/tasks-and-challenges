@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Details from './Details';
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,20 +10,53 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import Card from 'react-bootstrap/Card';
+import '../custom.css';
 
 function Element(props){
   const user = props.user;
   const challenge = props.challenge;
   return (
-    <div>
-      <p>-------------------------------</p>
-      <h6>title: {challenge.title}</h6>
-      <p>author: {challenge.author}</p>
-      <p>details: {challenge.details}</p>
-      <p>reward: {challenge.points}</p>
-      {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}
-      {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button onClick={() => props.handleChangeState(challenge._id)}>View details</button>}
-    </div>
+    // <div>
+    //   <p>-------------------------------</p>
+    //   <h6>title: {challenge.title}</h6>
+    //   <p>author: {challenge.author}</p>
+    //   <p>details: {challenge.details}</p>
+    //   <p>reward: {challenge.points}</p>
+    //   {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}
+    //   {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button onClick={() => props.handleChangeState(challenge._id)}>View details</button>}
+    // </div>
+
+    <Card className='my-3'>
+      <Card.Body>
+        <Card.Title>{challenge.title}</Card.Title>
+        <Row>
+          <Col>
+            <Card.Subtitle className="mb-2 text-muted">Author: {challenge.author}</Card.Subtitle>
+          </Col>
+          <Col className='d-flex justify-content-end'>
+            <Card.Subtitle className="text-muted mb-2">Reward: {challenge.points}</Card.Subtitle>
+          </Col>
+        </Row>
+        <Card.Text className='max-lines-2'>
+          {challenge.details}
+        </Card.Text>
+        <Row>
+          <Col>
+            {(challenge.acceptedBy != null && challenge.acceptedBy != '') && // could be simplified, both null and '' return false
+              <Card.Subtitle className="text-muted mb-2">Claimed by: another_tester</Card.Subtitle>
+            }
+          </Col>
+          <Col className='d-flex justify-content-end align-items-end'>
+            {(challenge.challengeState === 0 && challenge.author != user[1]) ?
+              <Button onClick={() => props.handleClaim(challenge)} variant='success'>Claim</Button>
+            : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && 
+              <Button onClick={() => props.handleChangeState(challenge._id)} variant='success'>View details</Button>
+            }
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 }
 
