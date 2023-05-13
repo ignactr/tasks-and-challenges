@@ -95,6 +95,7 @@ function DeleteUser(){
         </Form>
     );
 }
+
 function ChangePassword(){
     const [oldPasswordController, setOldPasswordController]= useState('');
     const [newPasswordController1, setNewPasswordController1]= useState('');
@@ -212,8 +213,7 @@ function ChangePassword(){
             </Button>
 
             <Form.Group className='text-center m-1'>
-            {
-                responseMessage != '' &&
+            {responseMessage != '' &&
                 <Form.Text className='text-danger' id='responseMessage'>
                     {responseMessage}
                 </Form.Text>
