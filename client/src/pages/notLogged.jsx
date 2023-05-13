@@ -24,6 +24,7 @@ function NotLogged() {
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <div className='text-center my-3'>
+                    <i className='bi-shield-lock icon-big'></i>
                     <h1>You can't get here, because you aren't logged in</h1>
                 </div>
                 

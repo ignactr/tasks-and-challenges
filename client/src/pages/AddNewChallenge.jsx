@@ -103,10 +103,10 @@ function AddNewChallenge() {
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <Row>
-                    <Col xs={2} className='d-flex justify-content-start align-items-end ms-2'>
-                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light'>Go back</Button>
+                    <Col xs={3} className='d-flex justify-content-start align-items-end ms-2'>
+                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light'><i className='bi-arrow-left'></i> Go back</Button>
                     </Col>
-                    <Col xs={8} className='d-flex justify-content-center'>
+                    <Col xs={6} className='d-flex justify-content-center'>
                         <div className='text-center'>
                             <h2>Add a new challenge</h2>
                             <Form.Text className='fw-bold'>Karma of user {user[1]}: {user[2]}</Form.Text>

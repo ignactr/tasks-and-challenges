@@ -275,7 +275,7 @@ function User(){
             <Row className='justify-content-center'>
                 <Row>
                     <Col className='d-flex justify-content-start align-items-center'>
-                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light' type='submit'>Go back</Button>
+                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light' type='submit'><i className='bi-arrow-left'></i> Go back</Button>
                     </Col>
 
                     <Col>
@@ -285,7 +285,7 @@ function User(){
                     </Col>
 
                     <Col className='d-flex justify-content-end align-items-center'>
-                        <Button onClick={()=>{logOut()}} className='border border-3 border-secondary-subtle' variant='light'>Log out</Button>
+                        <Button onClick={()=>{logOut()}} className='border border-3 border-secondary-subtle' variant='light'>Log out <i className='bi-box-arrow-right'></i></Button>
                     </Col>
                 </Row>
                 

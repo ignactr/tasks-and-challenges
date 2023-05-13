@@ -154,7 +154,7 @@ function ShowChallenges(props){
           <Nav className='me-auto'>
             <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
           </Nav>
-          <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'>+ Add challenge</Button>
+          <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
         </Container>
       </Navbar>
 
