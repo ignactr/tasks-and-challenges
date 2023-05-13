@@ -7,7 +7,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Accordion from 'react-bootstrap/Accordion';
 
 function DeleteUser(){
     const [passwordController, setPasswordController]= useState('');
@@ -62,7 +62,7 @@ function DeleteUser(){
         //     {responseMessage != '' && <p>{responseMessage}</p>}
         // </form>
 
-        <Form className='m-4' noValidate validated={validated} onSubmit={(event)=>handleDelete(event)}>
+        <Form className='m-2' noValidate validated={validated} onSubmit={(event)=>handleDelete(event)}>
 
             <Form.Group className='mb-3' controlId='formPassword'>
                 <Form.Label>Password</Form.Label>
@@ -79,7 +79,7 @@ function DeleteUser(){
                 </Form.Control.Feedback>
             </Form.Group>
 
-            <Button className='w-100' variant='outline-danger' type='submit'>
+            <Button className='w-100 mt-1' variant='danger' type='submit'>
                 Delete account
             </Button>
 
@@ -161,7 +161,7 @@ function ChangePassword(){
         //     {responseMessage != '' && <p>{responseMessage}</p>}
         // </form>
 
-        <Form className='m-4' noValidate validated={validated} onSubmit={(event)=>handleChange(event)}>
+        <Form className='m-2' noValidate validated={validated} onSubmit={(event)=>handleChange(event)}>
 
             <Form.Group className='mb-3' controlId='formOldPassword'>
                 <Form.Label>Old password</Form.Label>
@@ -208,7 +208,7 @@ function ChangePassword(){
                 </Form.Control.Feedback>
             </Form.Group>
 
-            <Button className='w-100' variant='success' type='submit'>
+            <Button className='w-100 mt-1' variant='success' type='submit'>
                 Change password
             </Button>
 
@@ -225,7 +225,7 @@ function ChangePassword(){
 }
 function User(){
     const [userInfo, setUserInfo] = useState({});
-    const [pageState, setPageState] = useState(0);
+    // const [pageState, setPageState] = useState(0); replaced by Bootstrap accordions
 
     const navigateTo = useNavigate();
 
@@ -272,19 +272,27 @@ function User(){
         // </div>
 
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
-            <Row>
-                <Button onClick={()=>{navigateTo('../')}} className='w-25 border border-3 border-secondary-subtle' variant='light' type='submit'>
-                    Go back
-                </Button>
+            <Row className='justify-content-center'>
+                <Row>
+                    <Col className='d-flex justify-content-start align-items-center'>
+                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light' type='submit'>Go back</Button>
+                    </Col>
 
-                <div className='text-center mt-3'>
-                    <h2>User info</h2>
-                </div>
+                    <Col>
+                        <div className='text-center'>
+                            <h2>User info</h2>
+                        </div>
+                    </Col>
+
+                    <Col className='d-flex justify-content-end align-items-center'>
+                        <Button onClick={()=>{logOut()}} className='border border-3 border-secondary-subtle' variant='light'>Log out</Button>
+                    </Col>
+                </Row>
                 
-                <Col className='m-3 p-3 border border-5 border-light rounded'>
-                    <ListGroup className='m-4'>
+                <Col className='m-3 p-4 border border-5 border-light rounded'>
+                    <ListGroup>
                         <ListGroup.Item>Login: {userInfo['login']}</ListGroup.Item>
-                        <ListGroup.Item>User's karma: {userInfo['karma']}</ListGroup.Item>
+                        <ListGroup.Item>Karma: {userInfo['karma']}</ListGroup.Item>
                         <ListGroup.Item>Last login: {userInfo['lastLogged']}</ListGroup.Item>
                         <ListGroup.Item>Registered on: {userInfo['createDate']}</ListGroup.Item>
                     </ListGroup>
@@ -293,13 +301,25 @@ function User(){
                         <h4>Actions</h4>
                     </div>
 
-                    <ButtonGroup className='d-flex'>
-                        <Button onClick={()=>{logOut()}} className='border border-3 border-secondary-subtle' variant="light">Log out</Button>
-                        <Button onClick={()=>{setPageState(2)}} variant="success">Change password</Button>
-                        <Button onClick={()=>{setPageState(1)}} variant="danger">Delete account</Button>
-                    </ButtonGroup>
-                    
-                    {pageState === 1 ? <DeleteUser /> : pageState === 2 && <ChangePassword />}
+                    <Accordion>
+                        <Accordion.Item eventKey="0">
+                            <Accordion.Header>
+                                <span className='text-success'>Change password</span>
+                            </Accordion.Header>
+                            <Accordion.Body>
+                                <ChangePassword />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                        <Accordion.Item eventKey="1">
+                            <Accordion.Header>
+                                <span className='text-danger'>Delete account</span>
+                            </Accordion.Header>
+                            <Accordion.Body>
+                                <DeleteUser />
+                            </Accordion.Body>
+                        </Accordion.Item>
+                    </Accordion>
+
                 </Col>
             </Row>
         </Container>

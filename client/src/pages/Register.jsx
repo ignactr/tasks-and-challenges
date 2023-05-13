@@ -129,7 +129,7 @@ function Register(){
                             <Form.Control.Feedback type="invalid">
                                 Please provide a valid password.
                             </Form.Control.Feedback>
-                            <Form.Text>Power:</Form.Text>
+                            <Form.Text>Strength:</Form.Text>
                             <ProgressBar now={passwordPower} max={6}/>
                         </Form.Group>
 

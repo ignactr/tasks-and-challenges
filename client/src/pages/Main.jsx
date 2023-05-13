@@ -150,7 +150,7 @@ function ShowChallenges(props){
     <>
       <Navbar bg='light' variant='light'>
         <Container>
-          <Navbar.Brand onClick={()=>{navigateTo('../')}}>Tasks and Challenges</Navbar.Brand>
+          <Navbar.Brand>Tasks and Challenges</Navbar.Brand>
           <Nav className='me-auto'>
             <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
           </Nav>
