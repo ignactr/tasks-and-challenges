@@ -58,7 +58,7 @@ function Login(){
                 <div className='text-center'>
                     <h1>Tasks and Challenges</h1>
                 </div>
-                <Col className='m-3 p-3 border border-5 border-light rounded'>
+                <Col className='m-3 p-4 border border-5 border-light rounded'>
                     <Form noValidate validated={validated} onSubmit={(event) => handleLogin(event)}>
 
                         <Form.Group className='mb-3' controlId='formLogin'>

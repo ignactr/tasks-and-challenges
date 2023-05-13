@@ -75,13 +75,16 @@ function Details(props){
 
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
-                <Button onClick={()=>props.setSubPage(0)} className='w-25 border border-3 border-secondary-subtle' variant="light">
-                    Go back
-                </Button>
-
-                <div className='text-center mt-3'>
-                    <h2>Challenge details</h2>
-                </div>
+                <Row>
+                    <Col xs={2} className='d-flex justify-content-start align-items-end ms-2'>
+                        <Button onClick={()=>props.setSubPage(0)} className='border border-3 border-secondary-subtle' variant='light'>Go back</Button>
+                    </Col>
+                    <Col xs={8} className='d-flex justify-content-center'>
+                        <div className='text-center mt-3'>
+                            <h2>Challenge details</h2>
+                        </div>
+                    </Col>
+                </Row>
 
                 <Col className='m-3 p-4 border border-5 border-light rounded'>
                     <Tabs
