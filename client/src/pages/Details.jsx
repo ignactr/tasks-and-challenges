@@ -130,7 +130,7 @@ function Details(props){
                                 </Row>
 
                                 {(details.acceptedBy != '' && details.acceptedBy != null) && 
-                                    <p className='text-muted'>Accepted By: {details.acceptedBy}</p>
+                                    <p className='text-muted'>Claimed By: {details.acceptedBy}</p>
                                 }
 
                                 <div className='text-center'>

@@ -44,7 +44,7 @@ function Element(props){
         <Row>
           <Col>
             {(challenge.acceptedBy != null && challenge.acceptedBy != '') && // could be simplified, both null and '' return false
-              <Card.Subtitle className="text-muted mb-2">Claimed by: another_tester</Card.Subtitle>
+              <Card.Subtitle className="text-muted mb-2">Claimed by: {challenge.acceptedBy}</Card.Subtitle>
             }
           </Col>
           <Col className='d-flex justify-content-end align-items-end'>
@@ -179,6 +179,8 @@ function ShowChallenges(props){
           <Tab eventKey='available' title='Available'>
             {available.map(challenge => 
               <Element 
+                handleChangeState={props.handleChangeState} 
+                key={challenge._id}
                 handleClaim={handleClaim} 
                 challenge={challenge} 
                 user={user}
@@ -188,6 +190,8 @@ function ShowChallenges(props){
           <Tab eventKey='yours' title='Your challenges'>
             {yours.map(challenge => 
               <Element 
+                handleChangeState={props.handleChangeState} 
+                key={challenge._id}
                 handleClaim={handleClaim} 
                 challenge={challenge} 
                 user={user}
