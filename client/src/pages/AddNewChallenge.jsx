@@ -102,11 +102,19 @@ function AddNewChallenge() {
 
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
-                <div className='text-center'>
-                    <h2>Add a new challenge</h2>
-                    <Form.Text className='fw-bold'>Karma of user {user[1]}: {user[2]}</Form.Text>
-                </div>
-                <Col className='m-3 p-3 border border-5 border-light rounded'>
+                <Row>
+                    <Col xs={2} className='d-flex justify-content-start align-items-end ms-2'>
+                        <Button onClick={()=>{navigateTo('../')}} className='border border-3 border-secondary-subtle' variant='light'>Go back</Button>
+                    </Col>
+                    <Col xs={8} className='d-flex justify-content-center'>
+                        <div className='text-center'>
+                            <h2>Add a new challenge</h2>
+                            <Form.Text className='fw-bold'>Karma of user {user[1]}: {user[2]}</Form.Text>
+                        </div>
+                    </Col>
+                </Row>
+
+                <Col className='m-3 p-4 border border-5 border-light rounded'>
                     <Form noValidate validated={validated} onSubmit={(event) => handleSubmit(event)}>
 
                         <Form.Group className='mb-3' controlId='formTitle'>
@@ -176,18 +184,10 @@ function AddNewChallenge() {
                             </Col>
                         </Row>
 
-                        <Row>
-                            <Col>
-                                <Button onClick={()=>{navigateTo('../')}} className='w-100' variant='secondary'>
-                                    Go back
-                                </Button>
-                            </Col>
-                            <Col>
-                                <Button className='w-100' variant='success' type='submit'>
-                                    Add challenge
-                                </Button>
-                            </Col>
-                        </Row>
+                        <Button className='w-100' variant='success' type='submit'>
+                            Add challenge
+                        </Button>
+
                     </Form>
                 </Col>
             </Row>
