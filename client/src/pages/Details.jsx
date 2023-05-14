@@ -149,7 +149,9 @@ function Details(props){
         </Container>
     )
 }
+
 function Conversation(props){
+    const [comments, setComments] = useState([]);
     const [messageController,setMessageController] = useState('') 
 
     // form validation
@@ -157,22 +159,44 @@ function Conversation(props){
 
     const navigateTo = useNavigate();
 
-    // form submission should be properly handled, for now only validation is implemented
+    const getComments = async () => {
+        const token = localStorage.getItem('accessToken'); 
+        await axios.post('http://localhost:5000/api/conversation/show', {
+            id: props.challengeId,
+        },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
+            if (response.status === 200) { //success
+                setComments(response.data.data);
+            }
+        }).catch(error => {
+            if (error.response && error.response.status === 404) { //no comments found
+                setComments(null);
+            } 
+            else if (error.response && error.response.status === 401) { //unauthorized
+                navigateTo('../notlogged');
+            }
+            else if (error.response && error.response.status === 500) {
+                //internal server error
+            }
+            else {
+                console.log(error);
+            }
+        });
+    }
     const handleSubmit = async (event) => {
+        event.preventDefault();
         const token = localStorage.getItem('accessToken');
         const form = event.currentTarget;
-        event.preventDefault();
         if (form.checkValidity() === false) {
-        event.stopPropagation();
+            event.stopPropagation();
         }
-
         setValidated(true);
         await axios.post('http://localhost:5000/api/conversation/add', {
-            challengeId: props.challengeId,
+            id: props.challengeId,
             text: messageController,
         },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
-            if (response.status === 200) {
-                //worked
+            if (response.status === 200) { //comment added succesfully
+                getComments();
+                setMessageController('');
             }
         }).catch(error => {
             if (error.response && error.response.status === 400) {
@@ -193,6 +217,9 @@ function Conversation(props){
         });
 
     };
+    useEffect(()=>{
+        getComments();
+    }, []);
 
     return (
         // <div>
@@ -209,6 +236,14 @@ function Conversation(props){
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                 <Form.Group className='mb-3' controlId='formMessage'>
+                    {
+                        comments.map((comment) => //you can access creation data by using comment.createDate
+                            <div key={comment._id}>
+                                <h6>{comment.author}</h6>
+                                <p>{comment.text}</p>
+                            </div>
+                        )
+                    }
                     <Form.Label>Message</Form.Label>
                     <Form.Control 
                         value= {messageController} 

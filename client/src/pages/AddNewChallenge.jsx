@@ -85,7 +85,7 @@ function AddNewChallenge() {
     }
     useEffect(()=>{
         getUserName();
-      }, []);
+    }, []);
 
     return (
         // <div>

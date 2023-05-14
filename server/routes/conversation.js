@@ -2,11 +2,29 @@ const express = require('express');
 const router = express.Router();
 const comments = require('../models/Comments');
 const users = require('../models/Users');
-const challenges = require('../models/Challenges')
 const bcrypt = require('bcrypt');
 const logCheck = require('../middlewares/logCheck');
 const mongoose = require('mongoose');
 
+router.post('/show',logCheck, async (req,res)=>{
+    try{
+        const challengeId = req.body.id;
+        const commentsToThisChallenge = await comments.find({ challengeId }).sort({createDate: 'asc'});
+
+        if (commentsToThisChallenge.length === 0) {
+            res.status(404).json({ error: 'No comments found' }); //410 no comments found
+            return;
+        }
+        res.status(200).json({ data: commentsToThisChallenge, message: "Resources sent successfully" }); //successfully send resources in response
+    } catch(error){
+        if (error.status === 401) {
+            res.status(401).json({ message: 'Unauthorized' }); //401 unauthorized
+        } else {
+            console.log(error);
+            res.status(500).json({ message: 'Internal server error' }); //500 internal server error
+        }
+    }
+});
 router.post('/add',logCheck, async (req,res)=>{
     try{
         const challengeId = req.body.id;
@@ -37,7 +55,6 @@ router.post('/add',logCheck, async (req,res)=>{
         if (error.status === 401) {
             res.status(401).json({ message: 'Unauthorized' }); //401 unauthorized
         } else {
-            console.log(error);
             res.status(500).json({ message: 'Internal server error' }); //500 internal server error
         }
     }
