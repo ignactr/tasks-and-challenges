@@ -57,6 +57,40 @@ function Details(props){
             }
         });
     }
+    const handleCancel = async () => {
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/handleStateChange/cancel',{
+            challengeId: details._id,
+        },{headers: {'Authorization': `Bearer ${token}`}}
+        ).then((response)=> {
+            if (response.status === 200) {
+                getDetails(props.id);
+            }
+        }).catch((error) =>{
+            if (error.response && error.response.status === 401) {
+                navigateTo('../notlogged');
+            } else if (error.response && error.response.status === 500) {
+                console.log(error);
+            }
+        });
+    }
+    const handleUnclaim = async () => {
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/handleStateChange/unclaim',{
+            challengeId: details._id,
+        },{headers: {'Authorization': `Bearer ${token}`}}
+        ).then((response)=> {
+            if (response.status === 200) {
+                props.setSubPage(0)
+            }
+        }).catch((error) =>{
+            if (error.response && error.response.status === 401) {
+                navigateTo('../notlogged');
+            } else if (error.response && error.response.status === 500) {
+                console.log(error);
+            }
+        });
+    }
     const handleVerify = async (option) => {
         const token = localStorage.getItem('accessToken');
         await axios.post('http://localhost:5000/api/handleStateChange/verify',{
@@ -103,30 +137,6 @@ function Details(props){
     }, []);
 
     return (
-        // <div>
-        //     <p>
-        //         <button onClick={()=>props.setSubPage(0)}>go back</button>
-        //         <button onClick={()=>setSubPage(0)}>Details</button>
-        //         <button onClick={()=>setSubPage(1)}>Conversation</button>
-        //     </p>
-        //     {
-        //     subPage === 1 ? <Conversation challengeId={props.id}/> : 
-        //     <div>
-        //         <h2>Details</h2>
-        //         <p>author: {details.author}</p>
-        //         <p>title: {details.title}</p>
-        //         <p>details: {details.details}</p>
-        //         <p>start date: {formattedDate(details.startDate)}</p>
-        //         <p>end date: {formattedDate(details.endDate)}</p>
-        //         <p>reward: {details.points}</p>
-        //         <p>state: {details.challengeState === 0 ? 'available': details.challengeState === 1 ? 'claimed' : details.challengeState === 2 ? 'to verification' : details.challengeState === 3 ? 'finished' : 'expired'}</p>
-        //         {(details.acceptedBy != '' && details.acceptedBy != null) && <p>Accepted By: {details.acceptedBy}</p>}
-        //         {responseMessage != '' && <p>{responseMessage}</p>}
-
-        //     </div>
-        //     }
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <Row>
@@ -181,8 +191,8 @@ function Details(props){
                                             }
                                         </p>
                                     </Col>
-                                    {details.author === userLogin && <button onClick={()=>{handleDelete()}}>Delete Challenge</button>}
-                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button onClick={()=>{handleVerify(true)}}>Accept</button><button onClick={()=>{handleVerify(false)}}>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button onClick={()=>{handleToVerification()}}>Send to verification</button>}
+                                    {(details.author === userLogin && details.challengeState !== 3) ? <button onClick={()=>{handleDelete()}}>Delete Challenge</button> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button onClick={()=>{handleUnclaim()}}>Unclaim</button>}
+                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button onClick={()=>{handleVerify(true)}}>Accept</button><button onClick={()=>{handleVerify(false)}}>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) ? <button onClick={()=>{handleToVerification()}}>Send to verification</button> : (details.acceptedBy === userLogin && details.challengeState === 2) && <button onClick={()=>{handleCancel()}}>cancel</button>}
                                 </Row>
 
                                 {(details.acceptedBy != '' && details.acceptedBy != null) && 
