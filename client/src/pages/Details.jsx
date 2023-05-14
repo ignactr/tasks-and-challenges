@@ -155,15 +155,43 @@ function Conversation(props){
     // form validation
     const [validated, setValidated] = useState(false);
 
+    const navigateTo = useNavigate();
+
     // form submission should be properly handled, for now only validation is implemented
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
+        const token = localStorage.getItem('accessToken');
         const form = event.currentTarget;
-        if (form.checkValidity() === false) {
         event.preventDefault();
+        if (form.checkValidity() === false) {
         event.stopPropagation();
         }
 
         setValidated(true);
+        await axios.post('http://localhost:5000/api/conversation/add', {
+            challengeId: props.challengeId,
+            text: messageController,
+        },{headers: {'Authorization': `Bearer ${token}`}}).then(response => {
+            if (response.status === 200) {
+                //worked
+            }
+        }).catch(error => {
+            if (error.response && error.response.status === 400) {
+                //invalid data
+            } 
+            else if (error.response && error.response.status === 401) { //unauthorized
+                navigateTo('../notlogged');
+            }
+            else if (error.response && error.response.status === 410) {
+                //user doesn't exist (I don't know under what circumstances this could occur, but we are prepared for everything)
+            }
+            else if (error.response && error.response.status === 500) {
+                //internal server error
+            }
+            else {
+            console.log(error);
+            }
+        });
+
     };
 
     return (
@@ -177,8 +205,6 @@ function Conversation(props){
         // </div>
 
         <Container className='pt-3'>
-            <h3>Write a message:</h3>
-            <p className='text-muted'>ID: {props.challengeId}</p> {/* is this paragraph necessary? */}
 
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
 

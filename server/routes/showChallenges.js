@@ -9,10 +9,10 @@ router.post('/',logCheck, async (req, res) => {
       const tasks = await challenges.find();
       res.status(207).send({tasks,userId});
     } catch (error) {
-      console.log(error);
       if (error.response.status === 401) {
         res.status(401).json({ message: 'Unauthorized' });
       } else {
+        console.log(error);
         res.status(500).json({ message: 'Internal server error' });
       }
     }

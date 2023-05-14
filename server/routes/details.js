@@ -11,7 +11,6 @@ router.post('/details',logCheck, async (req,res)=>{
             res.status(410).json({ error: 'No challenge found' }); //410 no user found
             return;
         }
-        console.log(challenge);
         res.status(207).send(challenge);
     }catch(error){
         if (error.response.status === 401) {
