@@ -21,6 +21,22 @@ router.post('/claim',logCheck, async (req,res)=>{
         }
     }
 });
+router.post('/toVerification',logCheck, async (req,res)=>{
+    try {
+        const challengeId = req.body.challengeId;
+
+        await challenges.findByIdAndUpdate(challengeId, {challengeState: 2});
+        res.status(200).json({ message: 'Challenge`s state updated' });
+
+    } catch (error) {
+        if (error.status === 401) {
+            res.status(401).json({ message: 'Unauthorized' });
+        }else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+});
 router.post('/delete',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;

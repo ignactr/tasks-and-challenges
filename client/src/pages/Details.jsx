@@ -38,7 +38,42 @@ function Details(props){
             } else if (error.response && error.response.status === 500) {
                 console.log(error);
             }
-    });
+        });
+    }
+    const handleToVerification= async () =>{
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/handleStateChange/toVerification',{
+            challengeId: details._id,
+        },{headers: {'Authorization': `Bearer ${token}`}}
+        ).then((response)=> {
+            if (response.status === 200) {
+                getDetails(props.id);
+            }
+        }).catch((error) =>{
+            if (error.response && error.response.status === 401) {
+                navigateTo('../notlogged');
+            } else if (error.response && error.response.status === 500) {
+                console.log(error);
+            }
+        });
+    }
+    const handleVerify = async (option) => {
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/handleStateChange/verify',{
+            challengeId: details._id,
+            option: option
+        },{headers: {'Authorization': `Bearer ${token}`}}
+        ).then((response)=> {
+            if (response.status === 200) {
+                getDetails(props.id);
+            }
+        }).catch((error) =>{
+            if (error.response && error.response.status === 401) {
+                navigateTo('../notlogged');
+            } else if (error.response && error.response.status === 500) {
+                console.log(error);
+            }
+        });
     }
     const getDetails= async (id) => {
         const token = localStorage.getItem('accessToken');
@@ -147,7 +182,7 @@ function Details(props){
                                         </p>
                                     </Col>
                                     {details.author === userLogin && <button onClick={()=>{handleDelete()}}>Delete Challenge</button>}
-                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button>Accept</button><button>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button>Send to verification</button>}
+                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button onClick={()=>{handleVerify(true)}}>Accept</button><button onClick={()=>{handleVerify(false)}}>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button onClick={()=>{handleToVerification()}}>Send to verification</button>}
                                 </Row>
 
                                 {(details.acceptedBy != '' && details.acceptedBy != null) && 
