@@ -21,7 +21,7 @@ router.post('/',logCheck,async (req, res) => {
         res.status(201).json({ message: 'Challenge added' });
     } catch (error) {
         console.log(error);
-        if (error.response.status === 401) {
+        if (error.status === 401) {
           res.status(401).json({ message: 'Unauthorized' });
         } else {
           res.status(500).json({ message: 'Internal server error' });

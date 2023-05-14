@@ -13,6 +13,7 @@ function Details(props){
     // const [subPage, setSubPage] = useState(0); sub pages replaced by Bootstrap tabs
     const [details, setDetails] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
+    const [userLogin, setUserLogin] = useState('');
 
     const navigateTo = useNavigate();
 
@@ -22,14 +23,32 @@ function Details(props){
         return formattedDate;
     }
 
+    const handleDelete= async () =>{
+        const token = localStorage.getItem('accessToken');
+        await axios.post('http://localhost:5000/api/handleStateChange/delete',{
+            challengeId: details._id,
+        },{headers: {'Authorization': `Bearer ${token}`}}
+        ).then((response)=> {
+            if (response.status === 200) {
+                props.setSubPage(0)
+            }
+        }).catch((error) =>{
+            if (error.response && error.response.status === 401) {
+                navigateTo('../notlogged');
+            } else if (error.response && error.response.status === 500) {
+                console.log(error);
+            }
+    });
+    }
     const getDetails= async (id) => {
         const token = localStorage.getItem('accessToken');
-        await axios.post('http://localhost:5000/api/details/details',{id: id},
+        await axios.post('http://localhost:5000/api/details',{id: id},
         {headers: {'Authorization': `Bearer ${token}`}}
         ).then((response) => {
         //if user is logged in and there are no errors
         if (response.status === 207) {
-            setDetails(response.data);
+            setDetails(response.data.challenge);
+            setUserLogin(response.data.login)
         }
         }).catch((error) =>{
         //if user is not authorized
@@ -37,7 +56,7 @@ function Details(props){
             navigateTo('../notlogged');
         } 
         else if (error.response && error.response.status === 410) {
-            setResponseMessage('No challenge found');
+            setResponseMessage('No challenge or user found');
         }
         else if (error.response && error.response.status === 500) {
             setResponseMessage('Internal server error');
@@ -127,6 +146,8 @@ function Details(props){
                                             }
                                         </p>
                                     </Col>
+                                    {details.author === userLogin && <button onClick={()=>{handleDelete()}}>Delete Challenge</button>}
+                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button>Accept</button><button>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button>Send to verification</button>}
                                 </Row>
 
                                 {(details.acceptedBy != '' && details.acceptedBy != null) && 
