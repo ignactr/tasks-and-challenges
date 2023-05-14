@@ -141,7 +141,7 @@ function Details(props){
                             </Container>
                         </Tab>
                         <Tab eventKey="conv" title="Conversation">
-                            <Conversation challengeId={props.id}/>
+                            <Conversation challengeId={props.id} acceptedBy={details.acceptedBy}/>
                         </Tab>
                     </Tabs>
                 </Col>
@@ -222,21 +222,12 @@ function Conversation(props){
     }, []);
 
     return (
-        // <div>
-        //     <h2>Conversation</h2>
-        //     <p>id: {props.challengeId}</p>
-        //     <form onSubmit={(event)=>{}}>
-        //         Message: <input type="text" value= {messageController} onChange={(event)=>setMessageController(event.target.value)}></input>
-        //         <input type="submit" value="Send"/>
-        //     </form>
-        // </div>
-
         <Container className='pt-3'>
-
+            { props.acceptedBy === null ? <p>someone needs to claim this challenge first!</p> :
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
 
                 <Form.Group className='mb-3' controlId='formMessage'>
-                    {
+                    { comments === null ? <p>no comments</p> :
                         comments.map((comment) => //you can access creation data by using comment.createDate
                             <div key={comment._id}>
                                 <h6>{comment.author}</h6>
@@ -263,7 +254,9 @@ function Conversation(props){
                 </Button>
 
             </Form>
+            }
         </Container>
+        
     )
 }
 
