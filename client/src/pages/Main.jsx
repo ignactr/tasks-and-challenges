@@ -46,7 +46,7 @@ function Element(props){
             {(challenge.acceptedBy != null && challenge.acceptedBy != '') && // could be simplified, both null and '' return false
               <Card.Subtitle className="text-muted mb-2">Claimed by: {challenge.acceptedBy}</Card.Subtitle>
             }
-            {challenge.challengeState === 3 && <h6 className='text-primary'>Finished</h6>}
+            {challenge.challengeState === 3 ? <h6>finished</h6> : challenge.challengeState === 4 && <h6>expired</h6>}
           </Col>
           <Col className='d-flex justify-content-end align-items-end'>
             {(challenge.challengeState === 0 && challenge.author != user[1]) ?
