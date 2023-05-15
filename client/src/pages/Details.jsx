@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
-import Form from 'react-bootstrap/Form';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -192,13 +192,36 @@ function Details(props){
                                             }
                                         </p>
                                     </Col>
-                                    {(details.author === userLogin && details.challengeState !== 3) ? <button onClick={()=>{handleDelete()}}>Delete Challenge</button> : (details.acceptedBy === userLogin && details.challengeState === 1) && <button onClick={()=>{handleUnclaim()}}>Unclaim</button>}
-                                    {(details.author === userLogin && details.challengeState === 2) ? <p><button onClick={()=>{handleVerify(true)}}>Accept</button><button onClick={()=>{handleVerify(false)}}>Don't accept</button></p> : (details.acceptedBy === userLogin && details.challengeState === 1) ? <button onClick={()=>{handleToVerification()}}>Send to verification</button> : (details.acceptedBy === userLogin && details.challengeState === 2) && <button onClick={()=>{handleCancel()}}>cancel</button>}
                                 </Row>
 
                                 {(details.acceptedBy != '' && details.acceptedBy != null) && 
                                     <p className='text-muted'>Claimed By: {details.acceptedBy}</p>
                                 }
+
+                                <Row>
+                                    {(details.author === userLogin && details.challengeState === 2) ? 
+                                        <ButtonGroup>
+                                            <Button onClick={()=>{handleVerify(true)}} className='w-100 mb-3' variant='success'>Accept</Button>
+                                            <Button onClick={()=>{handleVerify(false)}} className='w-100 mb-3' variant='danger'>Don't accept</Button>
+                                        </ButtonGroup>
+                                    : (details.acceptedBy === userLogin && details.challengeState === 1) ? 
+                                        <Col>
+                                            <Button onClick={()=>{handleToVerification()}} className='w-100' variant='primary'>Send for verification</Button> 
+                                        </Col>
+                                    : (details.acceptedBy === userLogin && details.challengeState === 2) && 
+                                        <Button onClick={()=>{handleCancel()}} className='w-100 border border-3 border-secondary-subtle' variant='light'>Cancel</Button>
+                                    }
+
+                                    {(details.author === userLogin && details.challengeState !== 3) ? 
+                                        <Col>
+                                            <Button onClick={()=>{handleDelete()}} className='w-100' variant='outline-danger'>Delete challenge</Button>
+                                        </Col>
+                                    : (details.acceptedBy === userLogin && details.challengeState === 1) && 
+                                        <Col>
+                                            <Button onClick={()=>{handleUnclaim()}} className='w-100 border border-3 border-secondary-subtle' variant='light'>Unclaim</Button>
+                                        </Col>
+                                    }
+                                </Row>          
 
                                 <div className='text-center'>
                                     {responseMessage != '' && 
