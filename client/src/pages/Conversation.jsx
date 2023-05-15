@@ -4,17 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 function Conversation(props){
     const [comments, setComments] = useState([]);
-    const [messageController,setMessageController] = useState('') 
-
-    // form validation
-    const [validated, setValidated] = useState(false);
+    const [messageController,setMessageController] = useState('');
 
     const navigateTo = useNavigate();
 
@@ -44,11 +38,6 @@ function Conversation(props){
     const handleSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('accessToken');
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        }
-        setValidated(true);
         await axios.post('http://localhost:5000/api/conversation/add', {
             id: props.challengeId,
             text: messageController,
@@ -81,41 +70,47 @@ function Conversation(props){
     }, []);
 
     return (
-        <Container className='pt-3'>
-            { props.acceptedBy === null ? <p>someone needs to claim this challenge first!</p> :
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Container className='h-50 pt-3'>
+            { props.acceptedBy === null ? <p className='text-muted text-center'>Someone needs to claim this challenge first!</p> :
+            <>
+                <div style={{maxHeight: '30rem'}} className='overflow-auto d-flex flex-column-reverse'>
+                    <div>
+                        { comments === null ? 
+                            <p className='text-center text-muted'>No comments yet.</p> 
+                        :
+                            comments.map((comment) => //you can access creation data by using comment.createDate
+                                <div className='w-50 bg-success p-2 my-2 rounded text-white' key={comment._id}>
+                                    <h6>{comment.author}</h6>
+                                    {comment.text}
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
 
-                <Form.Group className='mb-3' controlId='formMessage'>
-                    { comments === null ? <p>no comments</p> :
-                        comments.map((comment) => //you can access creation data by using comment.createDate
-                            <div key={comment._id}>
-                                <h6>{comment.author}</h6>
-                                <p>{comment.text}</p>
-                            </div>
-                        )
-                    }
-                    <Form.Label>Message</Form.Label>
-                    <Form.Control 
-                        value= {messageController} 
-                        onChange={(event)=>setMessageController(event.target.value)}
-                        type='text' 
-                        placeholder='Enter message' 
-                        maxLength={100} // TBD
-                        required 
-                    />
-                    <Form.Control.Feedback type="invalid">
-                        Please provide a valid message.
-                    </Form.Control.Feedback>
-                </Form.Group>
+                <Form className='mt-3' noValidate onSubmit={handleSubmit}>
+                    
+                    <Form.Group className='mb-3' controlId='formMessage'>
+                        <Form.Label>Message</Form.Label>
+                        <InputGroup>
+                            <Form.Control 
+                                value= {messageController} 
+                                onChange={(event)=>setMessageController(event.target.value)}
+                                type='text' 
+                                placeholder='Enter message' 
+                                maxLength={500} // TBD
+                                required 
+                            />
+                            <Button variant='success' type='submit'>
+                                <i className='bi-send-fill'></i>
+                            </Button>
+                        </InputGroup>
+                    </Form.Group>
 
-                <Button className='w-100' variant='success' type='submit'>
-                    Send
-                </Button>
-
-            </Form>
+                </Form>
+            </>
             }
         </Container>
-        
     )
 }
 

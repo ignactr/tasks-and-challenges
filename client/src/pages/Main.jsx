@@ -46,7 +46,7 @@ function Element(props){
             {(challenge.acceptedBy != null && challenge.acceptedBy != '') && // could be simplified, both null and '' return false
               <Card.Subtitle className="text-muted mb-2">Claimed by: {challenge.acceptedBy}</Card.Subtitle>
             }
-            {challenge.challengeState === 3 && <h6>finished</h6>}
+            {challenge.challengeState === 3 && <h6 className='text-primary'>Finished</h6>}
           </Col>
           <Col className='d-flex justify-content-end align-items-end'>
             {(challenge.challengeState === 0 && challenge.author != user[1]) ?
@@ -149,7 +149,7 @@ function ShowChallenges(props){
     // </div>
 
     <>
-      <Navbar bg='light' variant='light'>
+      <Navbar sticky='top' className='border-bottom border-3 border-secondary-subtle' bg='light' variant='light'>
         <Container>
           <Navbar.Brand>Tasks and Challenges</Navbar.Brand>
           <Nav className='me-auto'>
@@ -159,7 +159,7 @@ function ShowChallenges(props){
         </Container>
       </Navbar>
 
-      <Container className='pt-4'>
+      <Container className='pt-4 pb-5'>
         <Tabs
           defaultActiveKey='all'
           id='challenge-filter-tab'
@@ -201,6 +201,10 @@ function ShowChallenges(props){
           </Tab>
         </Tabs>
       </Container>
+
+      <Navbar fixed='bottom' className='bg-success d-flex justify-content-center text-white'>
+        Copyright &copy; 2023 | Ignacy Trocki, Michał Burzyński 4GTP
+      </Navbar>
     </>
   )
 }
