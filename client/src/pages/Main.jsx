@@ -153,13 +153,15 @@ function ShowChallenges(props){
     // </div>
 
     <>
-      <Navbar sticky='top' className='border-bottom border-3 border-secondary-subtle' bg='light' variant='light'>
+      <Navbar sticky='top' expand='md' className='border-bottom border-3 border-secondary-subtle' bg='light' variant='light'>
         <Container>
-          <Navbar.Brand>Tasks and Challenges</Navbar.Brand>
-          <Nav className='me-auto'>
-            <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
-          </Nav>
-          <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
+          <Navbar.Brand className='mx-auto'>Tasks and Challenges</Navbar.Brand>
+          <Navbar.Collapse className='d-flex' id="navbar-nav">
+            <Nav className='me-auto ms-2'>
+              <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
+            </Nav>
+            <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 

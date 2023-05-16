@@ -28,13 +28,13 @@ function NotLogged() {
                     <h1>You can't get here, because you aren't logged in</h1>
                 </div>
                 
-                <Col className='d-flex justify-content-end'>
+                <Col xs={12} md={6} className='d-flex justify-content-center justify-content-md-end'>
                     <Button onClick={logIn} className='w-25 border border-3 border-secondary-subtle' variant='light' type='submit'>
                         Log in
                     </Button>
                 </Col>
 
-                <Col className='d-flex justify-content-start'>
+                <Col xs={12} md={6} className='d-flex justify-content-center justify-content-md-start mt-2 mt-md-0'>
                     <Button onClick={signUp} className='w-25' variant='success' type='submit'>
                         Sign up
                     </Button>

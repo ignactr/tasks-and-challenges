@@ -141,10 +141,10 @@ function Details(props){
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <Row>
-                    <Col xs={3} className='d-flex justify-content-start align-items-end ms-2'>
+                    <Col xs={4} md={3} className='d-flex justify-content-start align-items-end ms-2'>
                         <Button onClick={()=>props.setSubPage(0)} className='border border-3 border-secondary-subtle' variant='light'><i className='bi-arrow-left'></i> Go back</Button>
                     </Col>
-                    <Col xs={6} className='d-flex justify-content-center'>
+                    <Col xs={4} md={6} className='d-flex justify-content-center'>
                         <div className='text-center mt-3'>
                             <h2>Challenge details</h2>
                         </div>
