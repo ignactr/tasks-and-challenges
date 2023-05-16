@@ -78,7 +78,7 @@ function Conversation(props){
     }, []);
 
     return (
-        <Container className='h-50 pt-3'>
+        <Container className='pt-3'>
             { props.acceptedBy === null ? <p className='text-muted text-center'>Someone needs to claim this challenge first!</p> :
             <>
                 <div style={{maxHeight: '30rem'}} className='overflow-auto d-flex flex-column-reverse'>
@@ -87,17 +87,37 @@ function Conversation(props){
                             <p className='text-center text-muted'>No comments yet.</p> 
                         :
                             comments.map((comment) => //you can access creation data by using comment.createDate
-                                <div className='w-50 bg-success p-2 my-2 rounded text-white' key={comment._id}>
-                                    <Row>
-                                        <Col>
-                                            <h6>{comment.author}</h6>
-                                        </Col>
-                                        <Col className='d-flex justify-content-end'>
-                                            <span className='fs-nano'>{formattedDate(comment.createDate)}</span>
-                                        </Col>
-                                    </Row>
-                                    {comment.text}
-                                </div>
+                                <>
+                                {props.userLogin === comment.author ?
+                                    <div className='d-flex justify-content-end'>
+                                        <div className='w-50 bg-success p-2 my-2 me-2 rounded text-white's key={comment._id}>
+                                            <Row>
+                                                <Col>
+                                                    <h6>{comment.author}</h6>
+                                                </Col>
+                                                <Col className='d-flex justify-content-end'>
+                                                    <span className='fs-nano'>{formattedDate(comment.createDate)}</span>
+                                                </Col>
+                                            </Row>
+                                            {comment.text}
+                                        </div>
+                                    </div>
+                                :
+                                    <div className='d-flex justify-content-start'>
+                                        <div className='w-50 bg-light p-2 my-2 ms-2 rounded text-dark's key={comment._id}>
+                                            <Row>
+                                                <Col>
+                                                    <h6>{comment.author}</h6>
+                                                </Col>
+                                                <Col className='d-flex justify-content-end'>
+                                                    <span className='fs-nano'>{formattedDate(comment.createDate)}</span>
+                                                </Col>
+                                            </Row>
+                                            {comment.text}
+                                        </div>
+                                    </div>
+                                }
+                                </>
                             )
                         }
                     </div>

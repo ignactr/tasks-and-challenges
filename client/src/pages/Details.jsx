@@ -231,7 +231,7 @@ function Details(props){
                             </Container>
                         </Tab>
                         <Tab eventKey="conv" title="Conversation">
-                            <Conversation challengeId={props.id} acceptedBy={details.acceptedBy}/>
+                            <Conversation challengeId={props.id} acceptedBy={details.acceptedBy} userLogin={userLogin}/>
                         </Tab>
                     </Tabs>
                 </Col>
