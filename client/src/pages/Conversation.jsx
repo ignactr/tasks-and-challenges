@@ -5,12 +5,20 @@ import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/esm/Row';
+import Col from 'react-bootstrap/esm/Col';
 
 function Conversation(props){
     const [comments, setComments] = useState([]);
     const [messageController,setMessageController] = useState('');
 
     const navigateTo = useNavigate();
+
+    const formattedDate= (date) =>{
+        const dateToFormat= new Date(date);
+        const formattedDate = `${dateToFormat.getDate().toString().padStart(2, '0')}/${(dateToFormat.getMonth()+1).toString().padStart(2, '0')}/${dateToFormat.getFullYear()} ${dateToFormat.getHours().toString().padStart(2, '0')}:${dateToFormat.getMinutes().toString().padStart(2, '0')}:${dateToFormat.getSeconds().toString().padStart(2, '0')}`;
+        return formattedDate;
+    }
 
     const getComments = async () => {
         const token = localStorage.getItem('accessToken'); 
@@ -80,7 +88,14 @@ function Conversation(props){
                         :
                             comments.map((comment) => //you can access creation data by using comment.createDate
                                 <div className='w-50 bg-success p-2 my-2 rounded text-white' key={comment._id}>
-                                    <h6>{comment.author}</h6>
+                                    <Row>
+                                        <Col>
+                                            <h6>{comment.author}</h6>
+                                        </Col>
+                                        <Col className='d-flex justify-content-end'>
+                                            <span className='fs-nano'>{formattedDate(comment.createDate)}</span>
+                                        </Col>
+                                    </Row>
                                     {comment.text}
                                 </div>
                             )
