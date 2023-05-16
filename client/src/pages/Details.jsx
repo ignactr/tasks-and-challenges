@@ -11,7 +11,6 @@ import Tab from 'react-bootstrap/Tab';
 import Conversation from './Conversation';
 
 function Details(props){
-    // const [subPage, setSubPage] = useState(0); sub pages replaced by Bootstrap tabs
     const [details, setDetails] = useState({});
     const [responseMessage, setResponseMessage] = useState('');
     const [userLogin, setUserLogin] = useState('');
@@ -185,7 +184,7 @@ function Details(props){
                                             details.challengeState === 1 ? 
                                                 ' Claimed' : 
                                             details.challengeState === 2 ? 
-                                                ' Pending' : // changed from "to verification"
+                                                ' Pending' :
                                             details.challengeState === 3 ? 
                                                 ' Finished' : 
                                                 ' Expired'

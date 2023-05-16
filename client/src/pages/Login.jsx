@@ -68,7 +68,7 @@ function Login(){
                                 onChange={event => setLoginController(event.target.value)} 
                                 type='text' 
                                 placeholder='Enter login' 
-                                maxLength={50} // TBD based on db settings
+                                maxLength={50}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
@@ -83,7 +83,7 @@ function Login(){
                                 onChange={event => setPasswordController(event.target.value)} 
                                 type='password' 
                                 placeholder='Enter password' 
-                                maxLength={50} // TBD
+                                maxLength={50}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">

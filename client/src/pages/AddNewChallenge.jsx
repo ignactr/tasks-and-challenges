@@ -88,18 +88,6 @@ function AddNewChallenge() {
     }, []);
 
     return (
-        // <div>
-        //     <h2>Add new Challenge</h2>
-        //     <b>karma of user {user[1]}: {user[2]}</b>
-        //     <form onSubmit={(event) => handleSubmit(event)}>
-        //     Title: <input value={titleController} onChange={event => setTitleController(event.target.value)} /><br/>
-        //     Details: <input value={detailsController} onChange={event => setDetailsController(event.target.value)} /><br/>
-        //     Finish Date: <input type="datetime-local" value={endDateController} onChange={event => setEndDateController(event.target.value)} /><br/>
-        //     Reward: <input type="number" value={pointsController} onChange={event => pointsChange(event)} />{pointsWarning}<br/>
-        //     <p><button onClick={()=>{navigateTo('../')}}>go back</button><input type="submit" value="Add Challenge"/></p>
-        //     </form>
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <Row>
@@ -124,7 +112,7 @@ function AddNewChallenge() {
                                 onChange={event => setTitleController(event.target.value)} 
                                 type='text' 
                                 placeholder='Enter title' 
-                                maxLength={200} // TBD
+                                maxLength={200}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
@@ -141,7 +129,7 @@ function AddNewChallenge() {
                                 onChange={event => setDetailsController(event.target.value)}
                                 type='text' 
                                 placeholder='Write a detailed explanation of the task...' 
-                                // maxLength={1000} TBD based on db settings
+                                maxLength={2000}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">

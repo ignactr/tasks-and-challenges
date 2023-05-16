@@ -82,17 +82,6 @@ function Register(){
     }
 
     return(
-        // <div>
-        //     <form onSubmit={(event) => handleRegister(event)}>
-        //         Login: <input value={loginController} onChange={event => setLoginController(event.target.value)} /><br/>
-        //         Password: <input value={passwordController} onChange={event => passChanger(event)} /> <>power: {passwordPower}</> <br/>
-        //         Repeat password: <input value={secondPasswordController} onChange={event => setSecondPasswordController(event.target.value)} /><>{passwordController.length > 0 && passwordController != secondPasswordController && 'passwords have to be the same' }</><br/>
-        //         <input type="submit" value="sign up"/>
-        //         <p>have an account- <a href="http://localhost:5173/login">log in</a> </p>
-        //         <p>{responseMessage}</p>
-        //     </form>
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <div className='text-center'>
@@ -108,7 +97,7 @@ function Register(){
                                 onChange={event => setLoginController(event.target.value)} 
                                 type='text' 
                                 placeholder='Enter login' 
-                                maxLength={50} // TBD
+                                maxLength={50}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
@@ -123,7 +112,7 @@ function Register(){
                                 onChange={event => passChanger(event)} 
                                 type='password' 
                                 placeholder='Enter password' 
-                                maxLength={50} // TBD
+                                maxLength={50}
                                 required 
                             />
                             <Form.Control.Feedback type="invalid">
@@ -140,7 +129,7 @@ function Register(){
                                 onChange={event => setSecondPasswordController(event.target.value)} 
                                 type='password' 
                                 placeholder='Reenter password' 
-                                maxLength={50} // TBD
+                                maxLength={50}
                                 required 
                             />
                             <Form.Text className='text-danger'>

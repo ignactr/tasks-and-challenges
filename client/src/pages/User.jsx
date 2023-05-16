@@ -56,12 +56,6 @@ function DeleteUser(){
          );
     }
     return(
-        // <form onSubmit={(event)=>handleDelete(event)}>
-        //     password: <input type="text" value={passwordController} onChange={(event)=>setPasswordController(event.target.value)}></input><br/>
-        //     <input type="submit" value="delete"/>
-        //     {responseMessage != '' && <p>{responseMessage}</p>}
-        // </form>
-
         <Form className='m-2' noValidate validated={validated} onSubmit={(event)=>handleDelete(event)}>
 
             <Form.Group className='mb-3' controlId='formPassword'>
@@ -71,7 +65,7 @@ function DeleteUser(){
                     onChange={(event)=>setPasswordController(event.target.value)}
                     type='password' 
                     placeholder='Enter password' 
-                    maxLength={50} // TBD
+                    maxLength={50}
                     required 
                 />
                 <Form.Control.Feedback type="invalid">
@@ -153,14 +147,6 @@ function ChangePassword(){
         }
     }
     return(
-        // <form onSubmit={(event)=>handleChange(event)}>
-        //     old password: <input type="text" value={oldPasswordController} onChange={(event)=>setOldPasswordController(event.target.value)}></input><br/>
-        //     new password: <input type="text" value={newPasswordController1} onChange={(event)=>setNewPasswordController1(event.target.value)}></input><br/>
-        //     repeat new password: <input type="text" value={newPasswordController2} onChange={(event)=>setNewPasswordController2(event.target.value)}></input><br/>
-        //     <input type="submit" value="change password"/>
-        //     {responseMessage != '' && <p>{responseMessage}</p>}
-        // </form>
-
         <Form className='m-2' noValidate validated={validated} onSubmit={(event)=>handleChange(event)}>
 
             <Form.Group className='mb-3' controlId='formOldPassword'>
@@ -170,7 +156,7 @@ function ChangePassword(){
                     onChange={(event)=>setOldPasswordController(event.target.value)}
                     type='password' 
                     placeholder='Enter old password' 
-                    maxLength={50} // TBD
+                    maxLength={50}
                     required 
                 />
                 <Form.Control.Feedback type="invalid">
@@ -185,7 +171,7 @@ function ChangePassword(){
                     onChange={(event)=>setNewPasswordController1(event.target.value)}
                     type='password' 
                     placeholder='Enter new password' 
-                    maxLength={50} // TBD
+                    maxLength={50}
                     required 
                 />
                 <Form.Control.Feedback type="invalid">
@@ -200,7 +186,7 @@ function ChangePassword(){
                     onChange={(event)=>setNewPasswordController2(event.target.value)}
                     type='password' 
                     placeholder='Reenter new password' 
-                    maxLength={50} // TBD
+                    maxLength={50}
                     required 
                 />
                 <Form.Control.Feedback type="invalid">
@@ -225,7 +211,6 @@ function ChangePassword(){
 }
 function User(){
     const [userInfo, setUserInfo] = useState({});
-    // const [pageState, setPageState] = useState(0); replaced by Bootstrap accordions
 
     const navigateTo = useNavigate();
 
@@ -258,19 +243,6 @@ function User(){
     }, []);
 
     return (
-        // <div>
-        //     <button onClick={()=>{navigateTo('../')}}>back to main page</button>
-        //     <h2>User info</h2>
-        //     <h6>login: {userInfo['login']}</h6>
-        //     <h6>user's karma: {userInfo['karma']}</h6>
-        //     <h6>last logged in: {userInfo['lastLogged']}</h6>
-        //     <h6>registered in: {userInfo['createDate']}</h6>
-        //     <p><button onClick={()=>{logOut()}}>log out</button><button onClick={()=>{setPageState(2)}}>change password</button><button onClick={()=>{setPageState(1)}}>delete account</button></p>
-        //     {
-        //         pageState === 1 ? <DeleteUser /> : pageState === 2 && <ChangePassword />
-        //     }
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row className='justify-content-center'>
                 <Row>

@@ -17,16 +17,6 @@ function Element(props){
   const user = props.user;
   const challenge = props.challenge;
   return (
-    // <div>
-    //   <p>-------------------------------</p>
-    //   <h6>title: {challenge.title}</h6>
-    //   <p>author: {challenge.author}</p>
-    //   <p>details: {challenge.details}</p>
-    //   <p>reward: {challenge.points}</p>
-    //   {(challenge.acceptedBy != null && challenge.acceptedBy != '') && <p>claimed by: {challenge.acceptedBy}</p>}
-    //   {(challenge.challengeState === 0 && challenge.author != user[1]) ? <button onClick={() => props.handleClaim(challenge)}>Claim</button> : (challenge.author === user[1] || challenge.acceptedBy === user[1]) && <button onClick={() => props.handleChangeState(challenge._id)}>View details</button>}
-    // </div>
-
     <Card className='my-3'>
       <Card.Body>
         <Card.Title>{challenge.title}</Card.Title>
@@ -68,7 +58,6 @@ function Element(props){
 function ShowChallenges(props){
   const [challenges, setChallenges] = useState([]);
   const [user, setUser] = useState([]);
-  // const [filter, setFilter] = useState(0); filtering replaced by Bootstrap tabs
 
   const navigateTo = useNavigate();
 
@@ -137,21 +126,6 @@ function ShowChallenges(props){
   }, []);
 
   return (
-    // <div>
-    //   <h1>Challenges</h1>
-    //   <p><button onClick={()=> {navigateTo('../User')}}>zalogowany: {user[1]}</button>
-    //   <button onClick={()=>{navigateTo('../addNewChallenge')}}>+ Dodaj post</button></p>
-    //   <p><button onClick={() => setFilter(1) }>Wolne</button>
-    //   <button onClick={() => setFilter(2) }>Zamieszczone przez ciebie</button>
-    //   <button onClick={() => setFilter(0) }>Wszystkie</button></p>
-    //   <hr/>
-    //   <div>
-    //     {
-    //       filter === 0 ? challenges.map(challenge => <Element handleChangeState={props.handleChangeState} key={challenge._id} handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : filter === 1 ? available.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>) : yours.map(challenge => <Element handleClaim= {handleClaim} challenge= {challenge} user= {user}/>)
-    //     }
-    //   </div>
-    // </div>
-
     <>
       <Navbar sticky='top' expand='md' className='border-bottom border-3 border-secondary-subtle' bg='light' variant='light'>
         <Container>

@@ -133,7 +133,7 @@ function Conversation(props){
                                 onChange={(event)=>setMessageController(event.target.value)}
                                 type='text' 
                                 placeholder='Enter message' 
-                                maxLength={500} // TBD
+                                maxLength={500}
                                 required 
                             />
                             <Button variant='success' type='submit'>

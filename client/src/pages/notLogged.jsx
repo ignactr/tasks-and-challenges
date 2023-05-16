@@ -15,12 +15,6 @@ function NotLogged() {
     }
 
     return (
-        // <div>
-        //     <h1>You can't get here, because you aren't logged in </h1><br/>
-        //     <button onClick={logIn}>Log in</button>
-        //     <button onClick={signUp}>Sign up</button>
-        // </div>
-
         <Container className='min-vh-100 d-flex justify-content-center align-items-center'>
             <Row>
                 <div className='text-center my-3'>
