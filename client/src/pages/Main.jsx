@@ -147,7 +147,10 @@ function ShowChallenges(props){
           justify
         >
           <Tab eventKey='all' title='All'>
-            {challenges.map(challenge => 
+            {(!challenges.length) ?
+            <p className='text-center text-muted mt-5'>No challenges found</p>
+            :
+            challenges.map(challenge => 
               <Element 
                 handleChangeState={props.handleChangeState} 
                 key={challenge._id} 
@@ -158,7 +161,10 @@ function ShowChallenges(props){
             )}
           </Tab>
           <Tab eventKey='available' title='Available'>
-            {available.map(challenge => 
+            {(!available.length) ?
+            <p className='text-center text-muted mt-5'>No challenges found</p>
+            :
+            available.map(challenge => 
               <Element 
                 handleChangeState={props.handleChangeState} 
                 key={challenge._id}
@@ -169,7 +175,10 @@ function ShowChallenges(props){
             )}
           </Tab>
           <Tab eventKey='yours' title='Your challenges'>
-            {yours.map(challenge => 
+            {(!yours.length) ?
+            <p className='text-center text-muted mt-5'>No challenges found</p>
+            :
+            yours.map(challenge => 
               <Element 
                 handleChangeState={props.handleChangeState} 
                 key={challenge._id}
