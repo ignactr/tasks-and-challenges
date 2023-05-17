@@ -87,10 +87,10 @@ function Conversation(props){
                             <p className='text-center text-muted'>No comments yet.</p> 
                         :
                             comments.map((comment) => //you can access creation data by using comment.createDate
-                                <>
+                                <div key={comment._id}>
                                 {props.userLogin === comment.author ?
                                     <div className='d-flex justify-content-end'>
-                                        <div className='w-50 bg-success p-2 my-2 me-2 rounded text-white's key={comment._id}>
+                                        <div className='w-50 bg-success p-2 my-2 me-2 rounded text-white'>
                                             <Row>
                                                 <Col>
                                                     <h6>{comment.author}</h6>
@@ -117,7 +117,7 @@ function Conversation(props){
                                         </div>
                                     </div>
                                 }
-                                </>
+                                </div>
                             )
                         }
                     </div>

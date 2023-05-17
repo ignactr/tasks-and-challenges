@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const challenges = require('../models/Challenges');
+const users = require('../models/Users');
 const logCheck = require('../middlewares/logCheck');
 
 router.post('/',logCheck,async (req, res) => {
@@ -10,6 +11,19 @@ router.post('/',logCheck,async (req, res) => {
         details = req.body.details;
         endDate = new Date(req.body.endDate).toISOString();
         points = req.body.points;
+        const userId = req.userId;
+        const user = await users.findById(userId);
+        if (!user) {
+          res.status(410).json({ error: 'No user found' })
+          return;
+        }
+        if(user.karma < points-20){
+          res.status(422).json({error: 'You don\'t have enough karma'});
+          return;
+        }
+        else{
+          await users.findOneAndUpdate({ _id: userId },{karma: points-20},{ new: true });
+        }
         const newChallenge = new challenges({
             author,
             title,

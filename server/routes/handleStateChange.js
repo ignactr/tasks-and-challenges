@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const comments = require('../models/Comments');
 const challenges = require('../models/Challenges');
+const users = require('../models/Users');
 const logCheck = require('../middlewares/logCheck');
 
 router.post('/claim',logCheck, async (req,res)=>{
@@ -94,6 +95,14 @@ router.post('/verify',logCheck, async (req,res)=>{
 
         if(option === true){
             operation = 3;
+            const challenge = await challenges.findById(challengeId);
+            const acceptedBy = challenge.acceptedBy;
+            const user = await users.findOne({login: acceptedBy});
+            if (!user) {
+                res.status(410).json({ error: 'No user found' });
+                return;
+            }
+            await users.findOneAndUpdate({ _id: user._id },{karma: user.karma + challenge.points},{ new: true });
         }
         else{
             operation = 1;

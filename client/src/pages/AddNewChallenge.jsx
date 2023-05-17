@@ -82,6 +82,10 @@ function AddNewChallenge() {
                 }
             });
         }
+        else{
+            //error when user hasn't got this many points
+            setResponseMessage('You don\'t have enough karma');
+        }
     }
     useEffect(()=>{
         getUserName();
