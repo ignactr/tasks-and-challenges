@@ -3,7 +3,7 @@ const router = express.Router();
 const challenges = require('../models/Challenges');
 const logCheck = require('../middlewares/logCheck');
 
-async function handleExpiry () {
+async function handleExpiry () { //takes every single challenge and checks if it has expired. If yes, it will update it's state
   const tasks = await challenges.find();
   tasks.forEach(async (challenge) => {
     if(challenge.endDate < Date.now()){

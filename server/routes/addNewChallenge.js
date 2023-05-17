@@ -22,7 +22,7 @@ router.post('/',logCheck,async (req, res) => {
           return;
         }
         else{
-          await users.findOneAndUpdate({ _id: userId },{karma: points-20},{ new: true });
+          await users.findOneAndUpdate({ _id: userId },{karma: points-20},{ new: true }); //substracted karma from author
         }
         const newChallenge = new challenges({
             author,
@@ -32,7 +32,7 @@ router.post('/',logCheck,async (req, res) => {
             points,
         });
         await newChallenge.save();
-        res.status(201).json({ message: 'Challenge added' });
+        res.status(201).json({ message: 'Challenge added' }); //successfully added new challenge
     } catch (error) {
         console.log(error);
         if (error.status === 401) {

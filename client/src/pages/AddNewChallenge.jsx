@@ -77,6 +77,9 @@ function AddNewChallenge() {
                 else if (error.response && error.response.status === 300) {
                     setResponseMessage('Wrong password');
                 }
+                else if (error.response && error.response.status === 422) {
+                    setResponseMessage('You don\'t have enough karma');
+                }
                 else {
                 console.log(error);
                 }

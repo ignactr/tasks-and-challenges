@@ -106,6 +106,8 @@ function Details(props){
                 navigateTo('../notlogged');
             } else if (error.response && error.response.status === 500) {
                 console.log(error);
+            } else if (error.response && error.response.status === 410) { //user not found
+                console.log(error);
             }
         });
     }
