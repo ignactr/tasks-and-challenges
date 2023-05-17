@@ -5,6 +5,7 @@ const challenges = require('../models/Challenges');
 const users = require('../models/Users');
 const logCheck = require('../middlewares/logCheck');
 
+//claims someone's challenge
 router.post('/claim',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;
@@ -22,6 +23,7 @@ router.post('/claim',logCheck, async (req,res)=>{
         }
     }
 });
+//unclaims someone's challenge
 router.post('/unclaim',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;
@@ -38,6 +40,7 @@ router.post('/unclaim',logCheck, async (req,res)=>{
         }
     }
 });
+//cancels verification request
 router.post('/cancel',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;
@@ -54,6 +57,7 @@ router.post('/cancel',logCheck, async (req,res)=>{
         }
     }
 });
+//sends challenge to verification
 router.post('/toVerification',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;
@@ -70,6 +74,7 @@ router.post('/toVerification',logCheck, async (req,res)=>{
         }
     }
 });
+//deletes challenge by author
 router.post('/delete',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;
@@ -87,6 +92,7 @@ router.post('/delete',logCheck, async (req,res)=>{
         }
     }
 });
+//verifies challenge. If option equals true, state is updated to finished (3), if false, state returns to claimed (1)
 router.post('/verify',logCheck, async (req,res)=>{
     try {
         const challengeId = req.body.challengeId;

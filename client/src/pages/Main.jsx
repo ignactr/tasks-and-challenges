@@ -64,6 +64,9 @@ function ShowChallenges(props){
   const yours = challenges.filter((challenge) =>{
     return challenge.author === user[1];
   });
+  const claimed = challenges.filter((challenge) =>{
+    return challenge.acceptedBy === user[1];
+  });
   const available = challenges.filter(challenge =>{
     return challenge.challengeState === 0;
   });
@@ -174,11 +177,25 @@ function ShowChallenges(props){
               />
             )}
           </Tab>
-          <Tab eventKey='yours' title='Your challenges'>
+          <Tab eventKey='yours' title='Created by you'>
             {(!yours.length) ?
             <p className='text-center text-muted mt-5'>No challenges found</p>
             :
             yours.map(challenge => 
+              <Element 
+                handleChangeState={props.handleChangeState} 
+                key={challenge._id}
+                handleClaim={handleClaim} 
+                challenge={challenge} 
+                user={user}
+              />
+            )}
+          </Tab>
+          <Tab eventKey='claimed' title='Claimed by you'>
+            {(!claimed.length) ?
+            <p className='text-center text-muted mt-5'>No challenges found</p>
+            :
+            claimed.map(challenge => 
               <Element 
                 handleChangeState={props.handleChangeState} 
                 key={challenge._id}

@@ -3,6 +3,7 @@ const router = express.Router();
 const users = require('../models/Users');
 const bcrypt = require('bcrypt');
 
+//creates a new user in database
 router.post('/', async (req,res)=>{
     try {
         const { login, password } = req.body;
@@ -19,7 +20,7 @@ router.post('/', async (req,res)=>{
             });
     
             await newUser.save();
-            res.status(201).json({ message: 'User registered successfully' });
+            res.status(201).json({ message: 'User registered successfully' }); //user registered successfully
         }
     } catch (error) {
         console.error(error);

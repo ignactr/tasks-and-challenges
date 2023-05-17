@@ -1,12 +1,12 @@
 import {BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import Main from './pages/Main';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import NotLogged from './pages/notLogged';
-import AddNewChallenge from './pages/AddNewChallenge';
-import User from './pages/User';
+import Main from './pages/Main'; //list of challenges, details about challenges and conversations
+import Login from './pages/Login'; //login form
+import Register from './pages/Register'; //registration form
+import NotLogged from './pages/notLogged'; //this page displays, when you are not authorized to be somewhere
+import AddNewChallenge from './pages/AddNewChallenge'; //form for adding new challenges
+import User from './pages/User'; //details about user, changing password, deleting account and logging out
 
 function App() {
   return (
