@@ -222,7 +222,7 @@ function User(){
             const formattedCreateDate = `${createDate.getDate().toString().padStart(2, '0')}/${(createDate.getMonth()+1).toString().padStart(2, '0')}/${createDate.getFullYear()} ${createDate.getHours().toString().padStart(2, '0')}:${createDate.getMinutes().toString().padStart(2, '0')}:${createDate.getSeconds().toString().padStart(2, '0')}`;
             const lastLogged= new Date(response.data.lastLogged);
             const formattedLastLogged = `${lastLogged.getDate().toString().padStart(2, '0')}/${(lastLogged.getMonth()+1).toString().padStart(2, '0')}/${lastLogged.getFullYear()} ${lastLogged.getHours().toString().padStart(2, '0')}:${lastLogged.getMinutes().toString().padStart(2, '0')}:${lastLogged.getSeconds().toString().padStart(2, '0')}`;
-            setUserInfo({id: response.data.userId, login: response.data.login, karma: response.data.karma, createDate: formattedCreateDate, lastLogged: formattedLastLogged});
+            setUserInfo({id: response.data.userId, login: response.data.login, karma: response.data.karma, createDate: formattedCreateDate, lastLogged: formattedLastLogged, isAdmin: response.data.isAdmin});
         }
         }).catch(error =>{
         //if user is not authorized
@@ -267,6 +267,7 @@ function User(){
                         <ListGroup.Item>Karma: {userInfo['karma']}</ListGroup.Item>
                         <ListGroup.Item>Last login: {userInfo['lastLogged']}</ListGroup.Item>
                         <ListGroup.Item>Registered on: {userInfo['createDate']}</ListGroup.Item>
+                        <button onClick={()=>navigateTo('../adminPanel')} style={{all: 'unset'}}><ListGroup.Item>account status: {userInfo['isAdmin'] === true ? <b>admin</b> : 'user'}</ListGroup.Item></button>
                     </ListGroup>
 
                     <div className='text-center my-3'>

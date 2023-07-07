@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Details from './Details';
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -112,7 +113,7 @@ function ShowChallenges(props){
     const token = localStorage.getItem('accessToken');
     await axios.post('http://localhost:5000/api/getUserFromId',null,{headers: {'Authorization': `Bearer ${token}`}}).then((response) => {
       if (response.status === 207) {
-        setUser([response.data.userId,response.data.login]);
+        setUser([response.data.userId,response.data.login,response.data.isAdmin]);
       }
     }).catch(error =>{
       //if user is not authorized
@@ -137,7 +138,13 @@ function ShowChallenges(props){
             <Nav className='me-auto ms-2'>
               <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
             </Nav>
-            <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
+            { user[2] === true ?
+              <ButtonGroup className="mb-3">
+                <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
+                <Button onClick={()=>navigateTo('../adminPanel')} variant='success'>Admin Panel</Button>
+              </ButtonGroup> :
+              <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
+            }
           </Navbar.Collapse>
         </Container>
       </Navbar>

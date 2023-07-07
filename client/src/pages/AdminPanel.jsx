@@ -8,7 +8,7 @@ function AdminPanel(){
     return(
         <div>
             <p>Admin Panel</p>
-            <button onClick={()=>navigateTo('../')}>Return</button>
+            <button onClick={()=>navigateTo('../')}>Main Page</button>
         </div>
     );
 }
