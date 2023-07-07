@@ -7,6 +7,7 @@ import Register from './pages/Register'; //registration form
 import NotLogged from './pages/notLogged'; //this page displays, when you are not authorized to be somewhere
 import AddNewChallenge from './pages/AddNewChallenge'; //form for adding new challenges
 import User from './pages/User'; //details about user, changing password, deleting account and logging out
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/notlogged" element={<NotLogged />}/>
         <Route path="/addNewChallenge" element={<AddNewChallenge />}/>
         <Route path="/user" element={<User />}/>
+        <Route path="/adminPanel" element={<AdminPanel />}/>
       </Routes>
     </BrowserRouter>
   )
