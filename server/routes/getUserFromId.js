@@ -39,7 +39,6 @@ router.post('/extended',logCheck,async (req, res) => {
         isAdmin: user.isAdmin
       });
   } catch (error) {
-      //console.log(error);
       if (error.response.status === 401) {
         res.status(401).json({ message: 'Unauthorized' });
       } else {

@@ -18,6 +18,7 @@ const handleStateChange = require('./routes/handleStateChange.js')
 const editUser = require('./routes/editUser.js')
 const details = require('./routes/details.js')
 const conversation = require('./routes/conversation.js')
+const adminPageTraffic = require('./routes/admin/pageTraffic.js')
 
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
