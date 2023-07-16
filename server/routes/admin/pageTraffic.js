@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const users = require('../models/Users');
-const adminCheck = require('.../middlewares/adminCheck');
+const users = require('../../models/Users');
+const adminCheck = require('../../middlewares/adminCheck');
 
 //ADMIN ROUTE: gets lis of users sorted by lastLogged field (ascending)
 router.post('/',adminCheck, async (req,res) => {

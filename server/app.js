@@ -29,6 +29,7 @@ app.use('/api/handleStateChange', handleStateChange);
 app.use('/api/editUser', editUser);
 app.use('/api/details', details);
 app.use('/api/conversation', conversation);
+app.use('/api/adminPageTraffic', adminPageTraffic);
 
 //launching server
 const port = process.env.PORT || 5000;
