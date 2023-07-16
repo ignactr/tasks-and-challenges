@@ -14,8 +14,7 @@ function AdminPanel(){
         ).then((response) => {
             //if user is admin and there are no errors
             if (response.status === 207) {
-                setPageTraffic(response.data);
-                console.log(pageTraffic);
+                setPageTraffic(response.data.data);
             }
         }).catch((error) =>{
             //if user is not logged in
@@ -43,9 +42,9 @@ function AdminPanel(){
         <div>
             <p>Admin Panel</p>
             <ul>
-                {pageTraffic.map((element) => {
+                {pageTraffic != null ? pageTraffic.map((element) => {
                     return <li>{element.login}</li>;
-                })}
+                }) : <h1>no data</h1>}
             </ul>
             <button onClick={() => navigateTo('../')}>Main Page</button>
         </div>

@@ -10,7 +10,7 @@ router.post('/',adminCheck, async (req,res) => {
         if(!usersSorted){
             res.status(410).json({ error: 'No users found' })
         }
-        res.status(207).send(usersSorted);
+        res.status(207).send({data: usersSorted});
     } catch (error) {
         if (error.response.status === 401) {
             res.status(401).json({ message: 'Unauthorized' });
