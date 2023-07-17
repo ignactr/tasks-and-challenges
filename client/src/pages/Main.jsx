@@ -12,6 +12,7 @@ import Nav from 'react-bootstrap/Nav';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import '../custom.css';
 
 function Element(props){
@@ -59,17 +60,41 @@ function Element(props){
 function ShowChallenges(props){
   const [challenges, setChallenges] = useState([]);
   const [user, setUser] = useState([]);
+  const [expiredVisible, setExpiredVisible] = useState(false);
 
   const navigateTo = useNavigate();
 
+  const all = challenges.filter((challenge) => {
+    if(!expiredVisible){
+      return challenge.challengeState != 4;
+    }
+    else{
+      return challenge;
+    }
+  });
   const yours = challenges.filter((challenge) =>{
-    return challenge.author === user[1];
+    if(expiredVisible){
+      return challenge.author === user[1];
+    }
+    else{
+      return challenge.author === user[1] && challenge.challengeState != 4;
+    }
   });
   const claimed = challenges.filter((challenge) =>{
-    return challenge.acceptedBy === user[1];
+    if(expiredVisible){
+      return challenge.acceptedBy === user[1];
+    }
+    else{
+      return challenge.acceptedBy === user[1] && challenge.challengeState != 4;
+    }
   });
   const available = challenges.filter(challenge =>{
-    return challenge.challengeState === 0;
+    if(expiredVisible){
+      return challenge.challengeState === 0;
+    }
+    else{
+      return challenge.challengeState === 0 && challenge.challengeState != 4;
+    }
   });
   const handleClaim = async (challenge) => {
     const token = localStorage.getItem('accessToken');
@@ -138,7 +163,7 @@ function ShowChallenges(props){
             <Nav className='me-auto ms-2'>
               <Nav.Link onClick={()=> {navigateTo('../User')}}>Logged in as: {user[1]}</Nav.Link>
             </Nav>
-            { user[2] === true ?
+            { user[2] === true ? //if user is admin
               <ButtonGroup className="mb-3">
                 <Button onClick={()=>{navigateTo('../addNewChallenge')}} variant='success'><i className='bi-plus-circle'></i> Add challenge</Button>
                 <Button onClick={()=>navigateTo('../adminPanel')} variant='success'>Admin Panel</Button>
@@ -150,6 +175,11 @@ function ShowChallenges(props){
       </Navbar>
 
       <Container className='pt-4 pb-5'>
+        <Form>
+          <div className='mb-1'>
+            <Form.Check onChange={()=>setExpiredVisible(!expiredVisible)} defaultChecked='true' type='checkbox' label='Hide expired' />
+          </div>
+        </Form>
         <Tabs
           defaultActiveKey='all'
           id='challenge-filter-tab'
@@ -160,7 +190,7 @@ function ShowChallenges(props){
             {(!challenges.length) ?
             <p className='text-center text-muted mt-5'>No challenges found</p>
             :
-            challenges.map(challenge => 
+            all.map(challenge => 
               <Element 
                 handleChangeState={props.handleChangeState} 
                 key={challenge._id} 
