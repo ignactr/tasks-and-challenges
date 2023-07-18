@@ -61,9 +61,11 @@ function ShowChallenges(props){
   const [challenges, setChallenges] = useState([]);
   const [user, setUser] = useState([]);
   const [expiredVisible, setExpiredVisible] = useState(false);
+  const [finishedVisible, setFinishedVisible] = useState(true);
 
   const navigateTo = useNavigate();
 
+  //various options for showing challenges depending on which tab will user click
   const all = challenges.filter((challenge) => {
     if(!expiredVisible){
       return challenge.challengeState != 4;
@@ -177,7 +179,8 @@ function ShowChallenges(props){
       <Container className='pt-4 pb-5'>
         <Form>
           <div className='mb-1'>
-            <Form.Check onChange={()=>setExpiredVisible(!expiredVisible)} defaultChecked='true' type='checkbox' label='Hide expired' />
+            <Form.Check inline onChange={()=>setExpiredVisible(!expiredVisible)} defaultChecked='true' type='checkbox' label='Hide expired' />
+            <Form.Check inline onChange={()=>setFinishedVisible(!finishedVisible)} type='checkbox' label='Hide Finished' />
           </div>
         </Form>
         <Tabs
