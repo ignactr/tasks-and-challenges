@@ -1,6 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
 function AdminPanel(){
     const [pageTraffic, setPageTraffic] = useState();
@@ -41,11 +44,22 @@ function AdminPanel(){
     return(
         <div>
             <p>Admin Panel</p>
-            <ul>
-                {pageTraffic != null ? pageTraffic.map((element) => {
-                    return <li>{element.login}</li>;
-                }) : <h1>no data</h1>}
-            </ul>
+            <Container className='pt-4 pb-5'>
+                <Tabs defaultActiveKey='all' id='admin-filter-tab' className='mb-3' justify>
+                    {/* shows list of registered users sorted by last time they have logged in */}
+                    <Tab eventKey='users' title='users'>
+                        <ul>
+                            {pageTraffic != null ? pageTraffic.map((element) => {
+                                return <li>{element.login}</li>;
+                            }) : <h1>no data</h1>}
+                        </ul>
+                    </Tab>
+                    {/* shows list of created challenges, admin can change them using this tab */}
+                    <Tab eventKey='challenges' title='challenges'>
+                        
+                    </Tab>
+                </Tabs>
+            </Container>
             <button onClick={() => navigateTo('../')}>Main Page</button>
         </div>
     );
