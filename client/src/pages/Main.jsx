@@ -68,35 +68,48 @@ function ShowChallenges(props){
   //various options for showing challenges depending on which tab will user click
   const all = challenges.filter((challenge) => {
     if(!expiredVisible){
-      return challenge.challengeState != 4;
+      if(finishedVisible){
+        return challenge.challengeState != 4;
+      }
+      return challenge.challengeState != 4 && challenge.challengeState != 3;
     }
     else{
-      return challenge;
+      if(finishedVisible){
+        return challenge;
+      }
+      return challenge.challengeState != 3;
     }
   });
   const yours = challenges.filter((challenge) =>{
     if(expiredVisible){
-      return challenge.author === user[1];
+      if(finishedVisible){
+        return challenge.author === user[1];
+      }
+      return challenge.author === user[1] && challenge.challengeState != 3;
     }
     else{
-      return challenge.author === user[1] && challenge.challengeState != 4;
+      if(finishedVisible){
+        return challenge.author === user[1] && challenge.challengeState != 4;
+      }
+      return challenge.author === user[1] && challenge.challengeState != 4 && challenge.challengeState != 3;
     }
   });
   const claimed = challenges.filter((challenge) =>{
     if(expiredVisible){
-      return challenge.acceptedBy === user[1];
+      if(finishedVisible){
+        return challenge.acceptedBy === user[1] 
+      }
+      return challenge.acceptedBy === user[1] && challenge.challengeState != 3;
     }
     else{
-      return challenge.acceptedBy === user[1] && challenge.challengeState != 4;
+      if(finishedVisible){
+        return challenge.acceptedBy === user[1] && challenge.challengeState != 4;
+      }
+      return challenge.acceptedBy === user[1] && challenge.challengeState != 4 && challenge.challengeState != 3;
     }
   });
   const available = challenges.filter(challenge =>{
-    if(expiredVisible){
       return challenge.challengeState === 0;
-    }
-    else{
-      return challenge.challengeState === 0 && challenge.challengeState != 4;
-    }
   });
   const handleClaim = async (challenge) => {
     const token = localStorage.getItem('accessToken');
