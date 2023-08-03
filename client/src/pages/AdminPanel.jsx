@@ -6,7 +6,8 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
 function AdminPanel(){
-    const [pageTraffic, setPageTraffic] = useState();
+    const [data, setData] = useState();
+    const [activeTab, setActiveTab] = useState('users');
 
     const navigateTo = useNavigate();
 
@@ -17,7 +18,7 @@ function AdminPanel(){
         ).then((response) => {
             //if user is admin and there are no errors
             if (response.status === 207) {
-                setPageTraffic(response.data.data);
+                setData(response.data.data);
             }
         }).catch((error) =>{
             //if user is not logged in
@@ -37,20 +38,28 @@ function AdminPanel(){
             }
     });
     }
-    useEffect(()=>{
-        getPageTraffic();
-    },[]);
+    const handleTabSelect = (selectedTab) => {
+        switch (selectedTab) {
+            case 'users':
+                getPageTraffic();
+                break;
+            case 'challenges':
+                //content in future
+                console.log('challenges');
+                break;
+        }
+    }
 
     return(
         <div>
             <p>Admin Panel</p>
             <Container className='pt-4 pb-5'>
-                <Tabs defaultActiveKey='all' id='admin-filter-tab' className='mb-3' justify>
+                <Tabs activeKey={activeTab} onSelect={handleTabSelect} id='admin-filter-tab' className='mb-3' justify>
                     {/* shows list of registered users sorted by last time they have logged in */}
                     <Tab eventKey='users' title='users'>
                         <ul>
-                            {pageTraffic != null ? pageTraffic.map((element) => {
-                                return <li>{element.login}</li>;
+                            {data != null ? data.map((element) => {
+                                return <li key={element._id}>{element.login}</li>;
                             }) : <h1>no data</h1>}
                         </ul>
                     </Tab>
