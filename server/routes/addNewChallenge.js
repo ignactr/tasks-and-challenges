@@ -17,12 +17,19 @@ router.post('/',logCheck,async (req, res) => {
           res.status(410).json({ error: 'No user found' })
           return;
         }
+        var pointsToTake;
+        if(points <= 20){
+          pointsToTake = 0;
+        }
+        else{
+          pointsToTake = points - 20;
+        }
         if(user.karma < points-20){
           res.status(422).json({error: 'You don\'t have enough karma'});
           return;
         }
         else{
-          await users.findOneAndUpdate({ _id: userId },{karma: points-20},{ new: true }); //substracted karma from author
+          await users.findOneAndUpdate({ _id: userId },{karma: user.karma - pointsToTake},{ new: true }); //substracted karma from author
         }
         const newChallenge = new challenges({
             author,

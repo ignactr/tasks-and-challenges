@@ -52,10 +52,7 @@ function AddNewChallenge() {
         event.preventDefault();
         event.stopPropagation();
         }
-
         setValidated(true);
-
-
         event.preventDefault();
         const token = localStorage.getItem('accessToken');
 
