@@ -6,7 +6,7 @@ const adminCheck = require('../../middlewares/adminCheck');
 //ADMIN ROUTE: gets lis of users sorted by lastLogged field (ascending)
 router.post('/',adminCheck, async (req,res) => {
     try {
-        const usersSorted = await users.find({}, null, {sort: 'lastLogged'}).select('login createDate lastLogged isAdmin');
+        const usersSorted = await users.find({}, null, {sort: {lastLogged: -1}}).select('login karma createDate lastLogged isAdmin');
         if(!usersSorted){
             res.status(410).json({ error: 'No users found' })
         }

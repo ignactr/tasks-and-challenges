@@ -58,8 +58,8 @@ function AdminPanel(){
                     {/* shows list of registered users sorted by last time they have logged in */}
                     <Tab eventKey='users' title='users'>
                         <ul>
-                            {data != null ? data.map((element) => {
-                                return <li key={element._id}>{element.login}</li>;
+                            {data != null ? data.map((user) => {
+                                return <li key={user._id}><b>{user.login}</b> karma: {user.karma} account created: {user.createDate} last logged: {user.lastLogged}</li>;
                             }) : <h1>no data</h1>}
                         </ul>
                     </Tab>
