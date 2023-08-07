@@ -5,10 +5,13 @@ import Container from 'react-bootstrap/Container';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
+import Stack from 'react-bootstrap/Stack';
+import Button from "react-bootstrap/Button";
 
 function AdminPanel(){
     const [data, setData] = useState();
     const [activeTab, setActiveTab] = useState('users');
+    const [selectedId, setSelectedId] = useState(null);
 
     const navigateTo = useNavigate();
 
@@ -50,6 +53,14 @@ function AdminPanel(){
                 break;
         }
     }
+    const formattedDate= (date) =>{
+        const dateToFormat= new Date(date);
+        const formattedDate = `${dateToFormat.getDate().toString().padStart(2, '0')}/${(dateToFormat.getMonth()+1).toString().padStart(2, '0')}/${dateToFormat.getFullYear()} ${dateToFormat.getHours().toString().padStart(2, '0')}:${dateToFormat.getMinutes().toString().padStart(2, '0')}:${dateToFormat.getSeconds().toString().padStart(2, '0')}`;
+        return formattedDate;
+    }
+    useEffect(()=>{
+        getPageTraffic();
+    },[]);
 
     return(
         <div>
@@ -61,21 +72,31 @@ function AdminPanel(){
                         <Table striped hover bordered>
                             <thead>
                                 <tr>
-                                    <th>id</th><th>login</th><th>karma</th><th>created at</th><th>last logged in</th>
+                                    <th>id</th><th>login</th><th>karma</th><th>created at</th><th>last logged in</th><th>is admin</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {data != null ? data.map((user) => {
-                                    return <tr key={user._id}>
+                                    return <tr key={user._id} onClick={()=>{setSelectedId(user._id)}}>
                                         <td>{user._id}</td>
                                         <td>{user.login}</td>
                                         <td>{user.karma}</td>
-                                        <td>{user.createDate}</td>
-                                        <td>{user.lastLogged}</td>
+                                        <td>{formattedDate(user.createDate)}</td>
+                                        <td>{formattedDate(user.lastLogged)}</td>
+                                        <td>{user.isAdmin === true ? 'yes' : 'no'}</td>
                                     </tr>;
                                 }) : <h1>no data</h1>}
                             </tbody>
                         </Table>
+                        { selectedId != null && 
+                            <Stack direction='horizontal' gap={2}>
+                                <Button variant='light'>Delete user</Button>
+                                <Button variant='light'>Change user's login</Button>
+                                <Button variant='light'>Edit karma</Button>
+                                <Button variant='light'>set as admin/user</Button>
+
+                            </Stack>
+                        }
                     </Tab>
                     {/* shows list of created challenges, admin can change them using this tab */}
                     <Tab eventKey='challenges' title='challenges'>
