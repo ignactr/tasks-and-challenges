@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
+import Table from 'react-bootstrap/Table';
 
 function AdminPanel(){
     const [data, setData] = useState();
@@ -57,11 +58,24 @@ function AdminPanel(){
                 <Tabs activeKey={activeTab} onSelect={handleTabSelect} id='admin-filter-tab' className='mb-3' justify>
                     {/* shows list of registered users sorted by last time they have logged in */}
                     <Tab eventKey='users' title='users'>
-                        <ul>
-                            {data != null ? data.map((user) => {
-                                return <li key={user._id}><b>{user.login}</b> karma: {user.karma} account created: {user.createDate} last logged: {user.lastLogged}</li>;
-                            }) : <h1>no data</h1>}
-                        </ul>
+                        <Table striped hover bordered>
+                            <thead>
+                                <tr>
+                                    <th>id</th><th>login</th><th>karma</th><th>created at</th><th>last logged in</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data != null ? data.map((user) => {
+                                    return <tr key={user._id}>
+                                        <td>{user._id}</td>
+                                        <td>{user.login}</td>
+                                        <td>{user.karma}</td>
+                                        <td>{user.createDate}</td>
+                                        <td>{user.lastLogged}</td>
+                                    </tr>;
+                                }) : <h1>no data</h1>}
+                            </tbody>
+                        </Table>
                     </Tab>
                     {/* shows list of created challenges, admin can change them using this tab */}
                     <Tab eventKey='challenges' title='challenges'>
