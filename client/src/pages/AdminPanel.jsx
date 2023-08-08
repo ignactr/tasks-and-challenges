@@ -11,7 +11,7 @@ import Button from "react-bootstrap/Button";
 function AdminPanel(){
     const [data, setData] = useState();
     const [activeTab, setActiveTab] = useState('users');
-    const [selectedId, setSelectedId] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     const navigateTo = useNavigate();
 
@@ -53,6 +53,14 @@ function AdminPanel(){
                 break;
         }
     }
+    const handleRowSelect = (user) =>{
+        if(selectedUser != null){
+            setSelectedUser(null);
+        }
+        else{
+            setSelectedUser(user);
+        }
+    }
     const formattedDate= (date) =>{
         const dateToFormat= new Date(date);
         const formattedDate = `${dateToFormat.getDate().toString().padStart(2, '0')}/${(dateToFormat.getMonth()+1).toString().padStart(2, '0')}/${dateToFormat.getFullYear()} ${dateToFormat.getHours().toString().padStart(2, '0')}:${dateToFormat.getMinutes().toString().padStart(2, '0')}:${dateToFormat.getSeconds().toString().padStart(2, '0')}`;
@@ -77,7 +85,7 @@ function AdminPanel(){
                             </thead>
                             <tbody>
                                 {data != null ? data.map((user) => {
-                                    return <tr key={user._id} onClick={()=>{setSelectedId(user._id)}}>
+                                    return <tr style={selectedUser != null && selectedUser._id === user._id ? {backgroundColor: 'lightgray'} : {}} key={user._id} onClick={()=>{handleRowSelect(user)}}>
                                         <td>{user._id}</td>
                                         <td>{user.login}</td>
                                         <td>{user.karma}</td>
@@ -88,7 +96,7 @@ function AdminPanel(){
                                 }) : <h1>no data</h1>}
                             </tbody>
                         </Table>
-                        { selectedId != null && 
+                        { selectedUser != null && 
                             <Stack direction='horizontal' gap={2}>
                                 <Button variant='light'>Delete user</Button>
                                 <Button variant='light'>Change user's login</Button>
