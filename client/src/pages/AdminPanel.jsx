@@ -14,7 +14,7 @@ function UsersView(props){
 
     const data = props.data;
     const handleRowSelect = (user) =>{
-        if(selectedUser != null){
+        if(selectedUser != null && user._id === selectedUser._id){
             setSelectedUser(null);
         }
         else{
@@ -64,7 +64,7 @@ function UsersView(props){
                             <label>password: </label>
                             <input type="text"></input><br/>
                             <label>user's login: </label>
-                            <input type="text"></input><br/>
+                            <input type="text" placeholder={selectedUser.login}></input><br/>
                             <input type="submit" value="Delete" />
                         </div>
                     </div>
