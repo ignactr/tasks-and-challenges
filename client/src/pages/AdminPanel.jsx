@@ -52,18 +52,47 @@ function UsersView(props){
                 <div>
                     <Stack direction='horizontal' gap={2}>
                         <a href="#divDelete" className="aButton">Delete user</a>
-                        <Button variant='light'>Change user's login</Button>
-                        <Button variant='light'>Edit karma</Button>
-                        <Button variant='light'>set as admin/user</Button>
+                        <a href="#divChange" className="aButton">Change user's login</a>
+                        <a href="#divKarma" className="aButton">Edit karma</a>
+                        <a href="#divSet" className="aButton">Set as admin/user</a>
+
                     </Stack>
                     <div className="overlay" id="divDelete">
                         <div className="wrapper">
+                            <h3>Delete user</h3>
                             <a href="#" className="close">&times;</a>
                             <label>password: </label>
-                            <input type="text"></input>
+                            <input type="text"></input><br/>
                             <label>user's login: </label>
-                            <input type="text" placeholder={selectedUser.login}></input>
+                            <input type="text"></input><br/>
                             <input type="submit" value="Delete" />
+                        </div>
+                    </div>
+                    <div className="overlay" id="divChange">
+                        <div className="wrapper">
+                            <h3>Change user's login</h3>
+                            <a href="#" className="close">&times;</a>
+                            <label>new login: </label>
+                            <input type="text"></input><br/>
+                            <input type="submit" value="Change login" />
+                        </div>
+                    </div>
+                    <div className="overlay" id="divKarma">
+                        <div className="wrapper">
+                            <h3>Edit karma</h3>
+                            <a href="#" className="close">&times;</a>
+                            <label>Number of karma: </label>
+                            <input type="number" placeholder={selectedUser.karma}></input><br/>
+                            <input type="submit" value="Change karma" />
+                        </div>
+                    </div>
+                    <div className="overlay" id="divSet">
+                        <div className="wrapper">
+                            <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
+                            <a href="#" className="close">&times;</a>
+                            <label>password: </label>
+                            <input type="text"></input><br/>
+                            <input type="submit" value={selectedUser.isAdmin === true ? 'Set as user' : 'Set as admin'} />
                         </div>
                     </div>
                 </div>

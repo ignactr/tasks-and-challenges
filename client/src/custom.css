@@ -18,12 +18,16 @@
 .aButton{
        margin: 4px 5px;
        padding: 7px 12px;
-       background: lightgray;
+       background-color:aliceblue;
        text-decoration: none;
        cursor: pointer;
        color: black;
        border-radius: 3px;
        transition: all 0.3s ease-out
+}
+.aButton:hover{
+       background: lightgray;
+       color: black;
 }
 .overlay{
        position: fixed;
