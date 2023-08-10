@@ -7,6 +7,7 @@ import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
 import Stack from 'react-bootstrap/Stack';
 import Button from "react-bootstrap/Button";
+import '../custom.css';
 
 function UsersView(props){
     const [selectedUser, setSelectedUser] = useState(null);
@@ -48,12 +49,24 @@ function UsersView(props){
                 </tbody>
             </Table>
             { selectedUser != null && 
-                <Stack direction='horizontal' gap={2}>
-                    <Button variant='light'>Delete user</Button>
-                    <Button variant='light'>Change user's login</Button>
-                    <Button variant='light'>Edit karma</Button>
-                    <Button variant='light'>set as admin/user</Button>
-                </Stack>
+                <div>
+                    <Stack direction='horizontal' gap={2}>
+                        <a href="#divDelete" className="aButton">Delete user</a>
+                        <Button variant='light'>Change user's login</Button>
+                        <Button variant='light'>Edit karma</Button>
+                        <Button variant='light'>set as admin/user</Button>
+                    </Stack>
+                    <div className="overlay" id="divDelete">
+                        <div className="wrapper">
+                            <a href="#" className="close">&times;</a>
+                            <label>password: </label>
+                            <input type="text"></input>
+                            <label>user's login: </label>
+                            <input type="text" placeholder={selectedUser.login}></input>
+                            <input type="submit" value="Delete" />
+                        </div>
+                    </div>
+                </div>
             }
         </div>
     )
