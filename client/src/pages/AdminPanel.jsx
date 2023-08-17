@@ -7,10 +7,15 @@ import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
 import Stack from 'react-bootstrap/Stack';
 import Button from "react-bootstrap/Button";
+import Form from 'react-bootstrap/Form';
 import '../custom.css';
 
 function UsersView(props){
     const [selectedUser, setSelectedUser] = useState(null);
+    const [validated, setValidated] = useState(false);
+    const [passwordController, setPasswordController] = useState('');
+    const [loginController, setLoginController] = useState('');
+    const [karmaController, setKarmaController] = useState(null);
 
     const data = props.data;
     const handleRowSelect = (user) =>{
@@ -20,6 +25,11 @@ function UsersView(props){
         else{
             setSelectedUser(user);
         }
+    }
+    const clearControllers = () =>{
+        setPasswordController('');
+        setLoginController('');
+        setKarmaController(null);
     }
     const formattedDate= (date) =>{
         const dateToFormat= new Date(date);
@@ -57,42 +67,127 @@ function UsersView(props){
                         <a href="#divSet" className="aButton">Set as admin/user</a>
 
                     </Stack>
+                    {/* div showing delete user form */}
                     <div className="overlay" id="divDelete">
                         <div className="wrapper">
-                            <h3>Delete user</h3>
-                            <a href="#" className="close">&times;</a>
-                            <label>password: </label>
-                            <input type="text"></input><br/>
-                            <label>user's login: </label>
-                            <input type="text" placeholder={selectedUser.login}></input><br/>
-                            <input type="submit" value="Delete" />
+                            <Form noValidate validated={validated} onSubmit={(event) => {}}>
+                                <h3>Delete user</h3>
+                                <a href="#" className="close" onClick={()=>{clearControllers()}}>&times;</a>
+                                <Form.Group className='mb-3' controlId='formPassword'>
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control 
+                                        value={passwordController} 
+                                        onChange={event => setPasswordController(event.target.value)} 
+                                        type='text' 
+                                        placeholder='Enter Password' 
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a valid password.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className='mb-3' controlId='formLogin'>
+                                    <Form.Label>Login</Form.Label>
+                                    <Form.Control 
+                                        value={loginController} 
+                                        onChange={event => setLoginController(event.target.value)} 
+                                        type='text' 
+                                        placeholder={selectedUser.login}
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a valid login.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button className='w-100' variant='success' type='submit'>
+                                    Delete
+                                </Button>
+                            </Form>
                         </div>
                     </div>
+                    {/* div showing change user's login form */}
                     <div className="overlay" id="divChange">
                         <div className="wrapper">
-                            <h3>Change user's login</h3>
-                            <a href="#" className="close">&times;</a>
-                            <label>new login: </label>
-                            <input type="text"></input><br/>
-                            <input type="submit" value="Change login" />
+                            <Form noValidate validated={validated} onSubmit={(event) => {}}>
+                                <h3>Change user's login</h3>
+                                <a href="#" className="close" onClick={()=>{clearControllers()}}>&times;</a>
+                                <Form.Group className='mb-3' controlId='formLogin'>
+                                    <Form.Label>Login</Form.Label>
+                                    <Form.Control 
+                                        value={loginController} 
+                                        onChange={event => setLoginController(event.target.value)} 
+                                        type='text' 
+                                        placeholder={selectedUser.login}
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a login.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button className='w-100' variant='success' type='submit'>
+                                    Change login
+                                </Button>    
+                            </Form>
                         </div>
                     </div>
+                    {/* div showing change user's karma form */}
                     <div className="overlay" id="divKarma">
                         <div className="wrapper">
-                            <h3>Edit karma</h3>
+                            {/* <h3>Edit karma</h3>
                             <a href="#" className="close">&times;</a>
                             <label>Number of karma: </label>
                             <input type="number" placeholder={selectedUser.karma}></input><br/>
-                            <input type="submit" value="Change karma" />
+                            <input type="submit" value="Change karma" /> */}
+                            <Form noValidate validated={validated} onSubmit={(event) => {}}>
+                                <h3>Edit user's karma</h3>
+                                <a href="#" className="close" onClick={()=>{clearControllers()}}>&times;</a>
+                                <Form.Group className='mb-3' controlId='formKarma'>
+                                    <Form.Label>Number of karma</Form.Label>
+                                    <Form.Control 
+                                        value={karmaController} 
+                                        onChange={event => setKarmaController(event.target.value)} 
+                                        type='number' 
+                                        placeholder={selectedUser.karma}
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a karma's number.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button className='w-100' variant='success' type='submit'>
+                                    Change karma
+                                </Button>    
+                            </Form>
                         </div>
                     </div>
+                    {/* div showing change user's status form */}
                     <div className="overlay" id="divSet">
                         <div className="wrapper">
-                            <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
+                            {/* <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
                             <a href="#" className="close">&times;</a>
                             <label>password: </label>
                             <input type="text"></input><br/>
-                            <input type="submit" value={selectedUser.isAdmin === true ? 'Set as user' : 'Set as admin'} />
+                            <input type="submit" value={selectedUser.isAdmin === true ? 'Set as user' : 'Set as admin'} /> */}
+                            <Form noValidate validated={validated} onSubmit={(event) => {}}>
+                                <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
+                                <a href="#" className="close" onClick={()=>{clearControllers()}}>&times;</a>
+                                <Form.Group className='mb-3' controlId='formPassword'>
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control 
+                                        value={passwordController} 
+                                        onChange={event => setPasswordController(event.target.value)} 
+                                        type='text' 
+                                        placeholder='Enter Password' 
+                                        required 
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please provide a valid password.
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Button className='w-100' variant='success' type='submit'>
+                                    {selectedUser.isAdmin === true ? 'Set as user' : 'Set as admin'}
+                                </Button>
+                            </Form>
                         </div>
                     </div>
                 </div>
