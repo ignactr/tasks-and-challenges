@@ -19,6 +19,7 @@ const editUser = require('./routes/editUser.js')
 const details = require('./routes/details.js')
 const conversation = require('./routes/conversation.js')
 const adminPageTraffic = require('./routes/admin/pageTraffic.js')
+const userOperations = require('./routes/admin/userOperations.js')
 
 app.use('/api/showChallenges', showChallenges);
 app.use('/api/handleRegistration', handleRegistration);
@@ -30,6 +31,7 @@ app.use('/api/editUser', editUser);
 app.use('/api/details', details);
 app.use('/api/conversation', conversation);
 app.use('/api/adminPageTraffic', adminPageTraffic);
+app.use('/api/adminUserOperations',userOperations);
 
 //launching server
 const port = process.env.PORT || 5000;
