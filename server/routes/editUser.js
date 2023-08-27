@@ -5,10 +5,10 @@ const challenges = require('../models/Challenges')
 const bcrypt = require('bcrypt');
 const logCheck = require('../middlewares/logCheck');
 
-router.post('/delete',logCheck, async (req,res) => {
-    try{
+router.post('/delete', logCheck, async (req, res) => {
+    try {
         const userId = req.userId;
-        const givenPassword= req.body.password
+        const givenPassword = req.body.password
         const user = await users.findById(userId);
         if (!user) {
             res.status(410).json({ error: 'No user found' }); //410 no user found
@@ -20,15 +20,15 @@ router.post('/delete',logCheck, async (req,res) => {
             return;
         }
         const match = await bcrypt.compare(givenPassword, password);
-        if (match) { 
+        if (match) {
             const deletedAuthor = user.login;
             await users.findOneAndRemove({ _id: userId }, { new: true });
-            await challenges.deleteMany({$and: [{author: deletedAuthor}, {challengeState: {$ne: 3}}]});
-            res.status(205).json({ message: 'Successfully deleted'}); //205 successfully deleted account
+            await challenges.deleteMany({ $and: [{ author: deletedAuthor }, { challengeState: { $ne: 3 } }] });
+            res.status(205).json({ message: 'Successfully deleted' }); //205 successfully deleted account
         } else {
             res.status(300).json({ error: 'Wrong password' }); //300 wrong password
         }
-    }catch(error){
+    } catch (error) {
         if (error.response.status === 401) {
             res.status(401).json({ message: 'Unauthorized' }); //401 unauthorized
         } else {
@@ -36,8 +36,8 @@ router.post('/delete',logCheck, async (req,res) => {
         }
     }
 });
-router.post('/changePassword', logCheck, async (req,res) => {
-    try{
+router.post('/changePassword', logCheck, async (req, res) => {
+    try {
         const userId = req.userId;
         const oldPassword = req.body.oldPassword;
         const newPassword = req.body.newPassword;
@@ -58,13 +58,13 @@ router.post('/changePassword', logCheck, async (req,res) => {
         const match = await bcrypt.compare(oldPassword, password);
         if (match) {
             const saltValue = bcrypt.genSaltSync(10);
-            const encryptedPassword = await bcrypt.hash(newPassword,saltValue)
-            await users.findOneAndUpdate({ _id: userId },{password: encryptedPassword},{ new: true });
-            res.status(205).json({ message: 'Successfully updated password'}); //205 successfully updated password
+            const encryptedPassword = await bcrypt.hash(newPassword, saltValue)
+            await users.findOneAndUpdate({ _id: userId }, { password: encryptedPassword }, { new: true });
+            res.status(205).json({ message: 'Successfully updated password' }); //205 successfully updated password
         } else {
             res.status(300).json({ error: 'Wrong password' }); //300 wrong password
         }
-    }catch(error){
+    } catch (error) {
         if (error.response.status === 401) {
             res.status(401).json({ message: 'Unauthorized' }); //401 unauthorized
         } else {
