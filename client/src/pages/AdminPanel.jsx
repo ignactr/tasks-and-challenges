@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
@@ -18,7 +18,9 @@ function UsersView(props) {
     const [passwordController, setPasswordController] = useState('');
     const [loginController, setLoginController] = useState('');
     const [karmaController, setKarmaController] = useState(null);
+    const [responseMessage, setResponseMessage] = useState('');
 
+    const closeLinkRef = useRef(null);
     const data = props.data;
     const handleRowSelect = (user) => {
         if (selectedUser != null && user._id === selectedUser._id) {
@@ -42,7 +44,7 @@ function UsersView(props) {
         return formattedDate;
     }
     //form handling functions
-    const handleDelete = async (event, selectedUsersLogin) => {
+    const handleDelete = async (event, selectedUsersLogin, selectedUserId) => {
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -53,20 +55,30 @@ function UsersView(props) {
         if (loginController === selectedUsersLogin) {
             const token = localStorage.getItem('accessToken');
             await axios.post('http://localhost:5000/api/adminUserOperations/delete', {
-                password: passwordController
+                password: passwordController,
+                id: selectedUserId
             }, { headers: { 'Authorization': `Bearer ${token}` } }).then(response => {
-                if (response.status === 201) {
-                    navigateTo('../');
+                if (response.status === 205) {
+                    setResponseMessage('user, his challenges and conversations from post successfully deleted');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click(); // Programmatically trigger the click event
+                    }
                 }
             }).catch(error => {
+                //if user is not logged in
+                if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                //if user is logged in but he is not an admin
+                else if (error.response && error.response.status === 402) {
+                    navigateTo('../notadmin');
+                }
                 if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
                 }
                 else if (error.response && error.response.status === 300) {
                     setResponseMessage('Wrong password');
-                }
-                else if (error.response && error.response.status === 422) {
-                    setResponseMessage('You don\'t have enough karma');
                 }
                 else {
                     console.log(error);
@@ -99,6 +111,10 @@ function UsersView(props) {
                     }) : <h1>no data</h1>}
                 </tbody>
             </Table>
+            {
+                responseMessage != '' &&
+                <h4>{responseMessage}</h4>
+            }
             {selectedUser != null &&
                 <div>
                     <Stack direction='horizontal' gap={2}>
@@ -111,7 +127,9 @@ function UsersView(props) {
                     {/* div showing delete user form */}
                     <div className="overlay" id="divDelete">
                         <div className="wrapper">
-                            <Form noValidate validated={validated} onSubmit={handleDelete}>
+                            <Form noValidate validated={validated} onSubmit={(event) => handleDelete(event, selectedUser.login, selectedUser._id)}>
+                                <h3>Delete user</h3>
+                                <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group controlId='formLogin'>
                                     <Form.Label>Login</Form.Label>
                                     <Form.Control
@@ -153,7 +171,7 @@ function UsersView(props) {
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => { }}>
                                 <h3>Change user's login</h3>
-                                <a href="#" className="close" onClick={() => { clearControllers() }}>&times;</a>
+                                <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formLogin'>
                                     <Form.Label>Login</Form.Label>
                                     <Form.Control
@@ -178,7 +196,7 @@ function UsersView(props) {
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => { }}>
                                 <h3>Edit user's karma</h3>
-                                <a href="#" className="close" onClick={() => { clearControllers() }}>&times;</a>
+                                <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formKarma'>
                                     <Form.Label>Number of karma</Form.Label>
                                     <Form.Control
@@ -203,7 +221,7 @@ function UsersView(props) {
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => { }}>
                                 <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
-                                <a href="#" className="close" onClick={() => { clearControllers() }}>&times;</a>
+                                <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formPassword'>
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control
