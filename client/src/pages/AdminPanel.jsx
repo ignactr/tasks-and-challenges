@@ -63,6 +63,7 @@ function UsersView(props) {
                     clearControllers();
                     if (closeLinkRef.current) {
                         closeLinkRef.current.click(); // Programmatically trigger the click event
+                        props.refresh();
                     }
                 }
             }).catch(error => {
@@ -302,7 +303,7 @@ function AdminPanel() {
                 <Tabs activeKey={activeTab} onSelect={handleTabSelect} id='admin-filter-tab' className='mb-3' justify>
                     {/* shows list of registered users sorted by last time they have logged in */}
                     <Tab eventKey='users' title='users'>
-                        <UsersView data={data} />
+                        <UsersView refresh={getPageTraffic} data={data} />
                     </Tab>
                     {/* shows list of created challenges, admin can change them using this tab */}
                     <Tab eventKey='challenges' title='challenges'>
