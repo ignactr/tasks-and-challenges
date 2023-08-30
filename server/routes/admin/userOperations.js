@@ -15,17 +15,13 @@ router.post('/delete', adminCheck, async (req, res) => {
         const adminPassword = admin.password;
         const match = await bcrypt.compare(givenPassword, adminPassword);
         if (match) {
-            const user = await users.find({ _id: givenId }, {});
+            const user = await users.findOne({ _id: givenId });
             if (!user) {
                 res.status(410).json({ error: 'No user found' }); //410 no user found
                 return;
             }
             const challengesOfThatUser = await challenges.find({ $and: [{ author: user.login }, { challengeState: { $ne: 3 } }] }, null, {}).select('_id');
-            console.log(challengesOfThatUser);
             const challengeIds = challengesOfThatUser.map(challenge => challenge._id);
-            console.log("Challenge IDs to delete:", challengeIds);
-            const commentsToDelete = await comments.find({ challengeId: { $in: challengeIds } });
-            console.log("Comments to delete:", commentsToDelete);
 
             await comments.deleteMany({ challengeId: { $in: challengeIds } }); // Delete comments associated with challengeIds
             await challenges.deleteMany({ _id: { $in: challengeIds } }); // Delete challenges associated with user
