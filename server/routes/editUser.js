@@ -21,10 +21,18 @@ router.post('/delete', logCheck, async (req, res) => {
         }
         const match = await bcrypt.compare(givenPassword, password);
         if (match) {
-            const deletedAuthor = user.login;
-            await users.findOneAndRemove({ _id: userId }, { new: true });
-            await challenges.deleteMany({ $and: [{ author: deletedAuthor }, { challengeState: { $ne: 3 } }] });
-            res.status(205).json({ message: 'Successfully deleted' }); //205 successfully deleted account
+            const user = await users.findOne({ _id: givenId });
+            if (!user) {
+                res.status(410).json({ error: 'No user found' }); //410 no user found
+                return;
+            }
+            const challengesOfThatUser = await challenges.find({ $and: [{ author: user.login }, { challengeState: { $ne: 3 } }] }, null, {}).select('_id');
+            const challengeIds = challengesOfThatUser.map(challenge => challenge._id);
+
+            await comments.deleteMany({ challengeId: { $in: challengeIds } }); // Delete comments associated with challengeIds
+            await challenges.deleteMany({ _id: { $in: challengeIds } }); // Delete challenges associated with user
+            await users.findOneAndRemove({ _id: givenId }, { new: true }); // Finally, delete that user
+            res.status(205).json({ message: 'Successfully deleted' }); //205 successfully deleted 
         } else {
             res.status(300).json({ error: 'Wrong password' }); //300 wrong password
         }
