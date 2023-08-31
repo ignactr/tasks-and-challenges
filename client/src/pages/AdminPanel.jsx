@@ -19,6 +19,7 @@ function UsersView(props) {
     const [loginController, setLoginController] = useState('');
     const [karmaController, setKarmaController] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
+    const [response, setResponse] = useState(0);
 
     const closeLinkRef = useRef(null);
     const data = props.data;
@@ -37,6 +38,7 @@ function UsersView(props) {
         setValidated(false);
         setPasswordValid(true);
         setLoginValid(true);
+        setResponse(0);
     }
     const formattedDate = (date) => {
         const dateToFormat = new Date(date);
@@ -54,6 +56,10 @@ function UsersView(props) {
         event.preventDefault();
         if (loginController === selectedUsersLogin) {
             setLoginValid(true);
+            if (passwordController === '') {
+                setPasswordValid(false);
+                return 0;
+            }
             const token = localStorage.getItem('accessToken');
             await axios.post('http://localhost:5000/api/adminUserOperations/delete', {
                 password: passwordController,
@@ -85,6 +91,7 @@ function UsersView(props) {
                     }
                 }
                 else if (error.response && error.response.status === 300) { //wrong password
+                    setResponse(300);
                     setPasswordValid(false);
                 }
                 else {
@@ -130,12 +137,8 @@ function UsersView(props) {
                 }
                 //if login is already occupied
                 else if (error.response && error.response.status === 409) {
-                    setResponseMessage('Login is already occupied');
-                    clearControllers();
-                    if (closeLinkRef.current) {
-                        closeLinkRef.current.click();
-                        props.refresh();
-                    }
+                    setResponse(409);
+                    setLoginValid(false);
                 }
                 else if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
@@ -225,11 +228,14 @@ function UsersView(props) {
                                         required
                                         isInvalid={!passwordValid}
                                     />
-                                    {(!validated || !passwordValid) && (
+                                    {response === 300 ?
                                         <Form.Control.Feedback type="invalid">
-                                            Please provide a valid password.
-                                        </Form.Control.Feedback>
-                                    )}
+                                            Wrong password.
+                                        </Form.Control.Feedback> : (!validated || !passwordValid) && (
+                                            <Form.Control.Feedback type="invalid">
+                                                Please provide a valid password.
+                                            </Form.Control.Feedback>
+                                        )}
                                 </Form.Group>
                                 <Button className='w-100' variant='success' type='submit'>
                                     Delete
@@ -253,9 +259,15 @@ function UsersView(props) {
                                         required
                                         isInvalid={!loginValid}
                                     />
-                                    <Form.Control.Feedback type="invalid">
-                                        Please provide a login.
-                                    </Form.Control.Feedback>
+                                    {
+                                        response === 409 ?
+                                            <Form.Control.Feedback type="invalid">
+                                                Login is already occupied
+                                            </Form.Control.Feedback> :
+                                            <Form.Control.Feedback type="invalid">
+                                                Please provide a login.
+                                            </Form.Control.Feedback>
+                                    }
                                 </Form.Group>
                                 <Button className='w-100' variant='success' type='submit'>
                                     Change login
