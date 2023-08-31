@@ -44,7 +44,22 @@ router.post('/delete', adminCheck, async (req, res) => {
 });
 router.post('/changeLogin', adminCheck, async (req, res) => {
     try {
-
+        const newLogin = req.body.login;
+        const userId = req.body.id;
+        const user = await users.findOne({ _id: userId });
+        if (!user) {
+            res.status(410).json({ error: 'No user found' }); //410 no user found
+            return;
+        }
+        const userWithThatLogin = await users.findOne({ login: newLogin });
+        if (!userWithThatLogin) {
+            await users.findOneAndUpdate({ _id: userId }, { login: newLogin }, { new: true });
+            res.status(205).json({ message: 'Successfully updated login' }); //205 successfully updated login
+        }
+        else {
+            res.status(409).json({ error: 'User already exists' });
+            return;
+        }
     } catch (error) {
         if (error.response.status === 401) {
             res.status(401).json({ message: 'Unauthorized' });

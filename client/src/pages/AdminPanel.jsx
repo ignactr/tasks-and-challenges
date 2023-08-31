@@ -76,8 +76,13 @@ function UsersView(props) {
                 else if (error.response && error.response.status === 402) {
                     navigateTo('../notadmin');
                 }
-                if (error.response && error.response.status === 410) {
+                else if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click(); // Programmatically trigger the click event
+                        props.refresh();
+                    }
                 }
                 else if (error.response && error.response.status === 300) { //wrong password
                     setPasswordValid(false);
@@ -91,8 +96,63 @@ function UsersView(props) {
             setLoginValid(false);
         }
     }
-    const handleLoginChange = async (event) => {
-
+    const handleLoginChange = async (event, selectedUserId) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        setValidated(true);
+        event.preventDefault();
+        if (loginController != '') {
+            setLoginValid(true);
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:5000/api/adminUserOperations/changeLogin', {
+                login: loginController,
+                id: selectedUserId
+            }, { headers: { 'Authorization': `Bearer ${token}` } }).then(response => {
+                if (response.status === 205) {
+                    setResponseMessage('login successfully changed');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click(); // Programmatically trigger the click event
+                        props.refresh();
+                    }
+                }
+            }).catch(error => {
+                //if user is not logged in
+                if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                //if user is logged in but he is not an admin
+                else if (error.response && error.response.status === 402) {
+                    navigateTo('../notadmin');
+                }
+                //if login is already occupied
+                else if (error.response && error.response.status === 409) {
+                    setResponseMessage('Login is already occupied');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click();
+                        props.refresh();
+                    }
+                }
+                else if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click();
+                        props.refresh();
+                    }
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        else {
+            setLoginValid(false);
+        }
     }
 
     return (
@@ -137,9 +197,6 @@ function UsersView(props) {
                     <div className="overlay" id="divDelete">
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => handleDelete(event, selectedUser.login, selectedUser._id)}>
-                                <h6>pass: {passwordValid ? 'true' : 'false'}</h6>
-                                <h6>login: {loginValid ? 'true' : 'false'}</h6>
-                                <h6>valid: {validated ? 'true' : 'false'}</h6>
                                 <h3>Delete user</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group controlId='formLogin'>
@@ -183,7 +240,7 @@ function UsersView(props) {
                     {/* div showing change user's login form */}
                     <div className="overlay" id="divChange">
                         <div className="wrapper">
-                            <Form noValidate validated={validated} onSubmit={(event) => { handleLoginChange(event) }}>
+                            <Form noValidate validated={validated} onSubmit={(event) => { handleLoginChange(event, selectedUser._id) }}>
                                 <h3>Change user's login</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formLogin'>
@@ -194,6 +251,7 @@ function UsersView(props) {
                                         type='text'
                                         placeholder={selectedUser.login}
                                         required
+                                        isInvalid={!loginValid}
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         Please provide a login.
