@@ -17,7 +17,7 @@ function UsersView(props) {
     const [loginValid, setLoginValid] = useState(true);
     const [passwordController, setPasswordController] = useState('');
     const [loginController, setLoginController] = useState('');
-    const [karmaController, setKarmaController] = useState(null);
+    const [karmaController, setKarmaController] = useState('');
     const [responseMessage, setResponseMessage] = useState('');
 
     const closeLinkRef = useRef(null);
@@ -33,7 +33,7 @@ function UsersView(props) {
     const clearControllers = () => {
         setPasswordController('');
         setLoginController('');
-        setKarmaController(null);
+        setKarmaController('');
         setValidated(false);
         setPasswordValid(true);
         setLoginValid(true);
@@ -53,6 +53,7 @@ function UsersView(props) {
         setValidated(true);
         event.preventDefault();
         if (loginController === selectedUsersLogin) {
+            setLoginValid(true);
             const token = localStorage.getItem('accessToken');
             await axios.post('http://localhost:5000/api/adminUserOperations/delete', {
                 password: passwordController,
@@ -78,8 +79,8 @@ function UsersView(props) {
                 if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
                 }
-                else if (error.response && error.response.status === 300) {
-                    setResponseMessage('Wrong password');
+                else if (error.response && error.response.status === 300) { //wrong password
+                    setPasswordValid(false);
                 }
                 else {
                     console.log(error);
@@ -90,28 +91,35 @@ function UsersView(props) {
             setLoginValid(false);
         }
     }
+    const handleLoginChange = async (event) => {
+
+    }
 
     return (
         <div>
-            <Table striped hover bordered>
-                <thead>
-                    <tr>
-                        <th>id</th><th>login</th><th>karma</th><th>created at</th><th>last logged in</th><th>is admin</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {data != null ? data.map((user) => {
-                        return <tr style={selectedUser != null && selectedUser._id === user._id ? { backgroundColor: 'lightgray' } : {}} key={user._id} onClick={() => { handleRowSelect(user) }}>
-                            <td>{user._id}</td>
-                            <td>{user.login}</td>
-                            <td>{user.karma}</td>
-                            <td>{formattedDate(user.createDate)}</td>
-                            <td>{formattedDate(user.lastLogged)}</td>
-                            <td>{user.isAdmin === true ? 'yes' : 'no'}</td>
-                        </tr>;
-                    }) : <h1>no data</h1>}
-                </tbody>
-            </Table>
+            {data != null ?
+                <Table striped hover bordered>
+                    <thead>
+                        <tr>
+                            <th>id</th><th>login</th><th>karma</th><th>created at</th><th>last logged in</th><th>is admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            data.map((user) => {
+                                return <tr style={selectedUser != null && selectedUser._id === user._id ? { backgroundColor: 'lightgray' } : {}} key={user._id} onClick={() => { handleRowSelect(user) }}>
+                                    <td>{user._id}</td>
+                                    <td>{user.login}</td>
+                                    <td>{user.karma}</td>
+                                    <td>{formattedDate(user.createDate)}</td>
+                                    <td>{formattedDate(user.lastLogged)}</td>
+                                    <td>{user.isAdmin === true ? 'yes' : 'no'}</td>
+                                </tr>;
+                            })
+                        }
+                    </tbody>
+                </Table>
+                : <h1>no data</h1>}
             {
                 responseMessage != '' &&
                 <h4>{responseMessage}</h4>
@@ -129,6 +137,9 @@ function UsersView(props) {
                     <div className="overlay" id="divDelete">
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => handleDelete(event, selectedUser.login, selectedUser._id)}>
+                                <h6>pass: {passwordValid ? 'true' : 'false'}</h6>
+                                <h6>login: {loginValid ? 'true' : 'false'}</h6>
+                                <h6>valid: {validated ? 'true' : 'false'}</h6>
                                 <h3>Delete user</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group controlId='formLogin'>
@@ -139,8 +150,9 @@ function UsersView(props) {
                                         type='text'
                                         placeholder={selectedUser.login}
                                         required
+                                        isInvalid={!loginValid}
                                     />
-                                    {validated && !loginValid && (
+                                    {(!validated || !loginValid) && (
                                         <Form.Control.Feedback type="invalid">
                                             Please provide a valid login.
                                         </Form.Control.Feedback>
@@ -154,8 +166,9 @@ function UsersView(props) {
                                         type='password'
                                         placeholder='Enter Password'
                                         required
+                                        isInvalid={!passwordValid}
                                     />
-                                    {validated && !passwordValid && (
+                                    {(!validated || !passwordValid) && (
                                         <Form.Control.Feedback type="invalid">
                                             Please provide a valid password.
                                         </Form.Control.Feedback>
@@ -170,11 +183,11 @@ function UsersView(props) {
                     {/* div showing change user's login form */}
                     <div className="overlay" id="divChange">
                         <div className="wrapper">
-                            <Form noValidate validated={validated} onSubmit={(event) => { }}>
+                            <Form noValidate validated={validated} onSubmit={(event) => { handleLoginChange(event) }}>
                                 <h3>Change user's login</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formLogin'>
-                                    <Form.Label>Login</Form.Label>
+                                    <Form.Label>New login</Form.Label>
                                     <Form.Control
                                         value={loginController}
                                         onChange={event => setLoginController(event.target.value)}
