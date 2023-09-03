@@ -82,6 +82,7 @@ function UsersView(props) {
                 else if (error.response && error.response.status === 402) {
                     navigateTo('../notadmin');
                 }
+                //if user is not found
                 else if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
                     clearControllers();
@@ -90,7 +91,8 @@ function UsersView(props) {
                         props.refresh();
                     }
                 }
-                else if (error.response && error.response.status === 300) { //wrong password
+                //if password is wrong
+                else if (error.response && error.response.status === 300) {
                     setResponse(300);
                     setPasswordValid(false);
                 }
@@ -140,6 +142,7 @@ function UsersView(props) {
                     setResponse(409);
                     setLoginValid(false);
                 }
+                //if user is not found
                 else if (error.response && error.response.status === 410) {
                     setResponseMessage('No user found');
                     clearControllers();
@@ -155,6 +158,64 @@ function UsersView(props) {
         }
         else {
             setLoginValid(false);
+        }
+    }
+    const handleEditKarma = async (event, selectedUserId) => {
+
+    }
+    const handleChangeStatus = async (event, selectedUserId) => {
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        setValidated(true);
+        event.preventDefault();
+        if (passwordController != '') {
+            setPasswordValid(true);
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:5000/api/adminUserOperations/changeStatus', {
+                password: passwordController,
+                id: selectedUserId
+            }, { headers: { 'Authorization': `Bearer ${token}` } }).then(response => {
+                if (response.status === 205) {
+                    setResponseMessage('status successfully changed');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click(); // Programmatically trigger the click event
+                        props.refresh();
+                    }
+                }
+            }).catch(error => {
+                //if user is not logged in
+                if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                //if user is logged in but he is not an admin
+                else if (error.response && error.response.status === 402) {
+                    navigateTo('../notadmin');
+                }
+                //if user is not found
+                else if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click();
+                        props.refresh();
+                    }
+                }
+                //if password is wrong
+                else if (error.response && error.response.status === 300) {
+                    setResponse(300);
+                    setPasswordValid(false);
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
+        else {
+            setPasswordValid(false);
         }
     }
 
@@ -303,7 +364,7 @@ function UsersView(props) {
                     {/* div showing change user's status form */}
                     <div className="overlay" id="divSet">
                         <div className="wrapper">
-                            <Form noValidate validated={validated} onSubmit={(event) => { }}>
+                            <Form noValidate validated={validated} onSubmit={(event) => { handleChangeStatus(event, selectedUser._id) }}>
                                 <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formPassword'>
@@ -314,10 +375,16 @@ function UsersView(props) {
                                         type='text'
                                         placeholder='Enter Password'
                                         required
+                                        isInvalid={!passwordValid}
                                     />
-                                    <Form.Control.Feedback type="invalid">
-                                        Please provide a valid password.
-                                    </Form.Control.Feedback>
+                                    {response === 300 ?
+                                        <Form.Control.Feedback type="invalid">
+                                            Wrong password.
+                                        </Form.Control.Feedback> : (!validated || !passwordValid) && (
+                                            <Form.Control.Feedback type="invalid">
+                                                Please provide a valid password.
+                                            </Form.Control.Feedback>
+                                        )}
                                 </Form.Group>
                                 <Button className='w-100' variant='success' type='submit'>
                                     {selectedUser.isAdmin === true ? 'Set as user' : 'Set as admin'}

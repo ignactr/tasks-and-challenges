@@ -57,7 +57,7 @@ router.post('/changeLogin', adminCheck, async (req, res) => {
             res.status(205).json({ message: 'Successfully updated login' }); //205 successfully updated login
         }
         else {
-            res.status(409).json({ error: 'User already exists' });
+            res.status(409).json({ error: 'Login is already occupied' }); //409 login is already occupied
             return;
         }
     } catch (error) {
@@ -89,6 +89,26 @@ router.post('/editKarma', adminCheck, async (req, res) => {
 });
 router.post('/changeStatus', adminCheck, async (req, res) => {
     try {
+        const adminId = req.adminId;
+        const userId = req.body.id;
+        const givenPassword = req.body.password;
+        const admin = await users.findById(adminId);
+        const adminPassword = admin.password;
+        const match = await bcrypt.compare(givenPassword, adminPassword);
+        if (match) {
+            const user = await users.findOne({ _id: userId });
+            if (!user) {
+                res.status(410).json({ error: 'No user found' }); //410 no user found
+                return;
+            }
+            if (user.isAdmin) {
+                await users.findOneAndUpdate({ _id: userId }, { isAdmin: false }, { new: true });
+            }
+            else {
+                await users.findOneAndUpdate({ _id: userId }, { isAdmin: true }, { new: true });
+            }
+            res.status(205).json({ message: 'Successfully changed status' }); //205 successfully changed status
+        }
 
     } catch (error) {
         if (error.response.status === 401) {
