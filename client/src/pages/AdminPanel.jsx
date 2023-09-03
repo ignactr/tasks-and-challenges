@@ -68,6 +68,7 @@ function UsersView(props) {
                 if (response.status === 205) {
                     setResponseMessage('user, his challenges and conversations from post successfully deleted');
                     clearControllers();
+                    setSelectedUser(null);
                     if (closeLinkRef.current) {
                         closeLinkRef.current.click(); // Programmatically trigger the click event
                         props.refresh();
@@ -219,6 +220,12 @@ function UsersView(props) {
         }
     }
 
+    useEffect(() => {
+        if (selectedUser != null) {
+            setSelectedUser(data.find(user => user._id === selectedUser._id));
+        }
+    }, [data]);
+
     return (
         <div>
             {data != null ?
@@ -365,14 +372,16 @@ function UsersView(props) {
                     <div className="overlay" id="divSet">
                         <div className="wrapper">
                             <Form noValidate validated={validated} onSubmit={(event) => { handleChangeStatus(event, selectedUser._id) }}>
-                                <h3>Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?</h3>
+                                <h3>
+                                    Set {selectedUser.login} as {selectedUser.isAdmin === true ? 'user' : 'admin'}?
+                                </h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
-                                <Form.Group className='mb-3' controlId='formPassword'>
+                                <Form.Group controlId='formPassword'>
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control
                                         value={passwordController}
                                         onChange={event => setPasswordController(event.target.value)}
-                                        type='text'
+                                        type='password'
                                         placeholder='Enter Password'
                                         required
                                         isInvalid={!passwordValid}

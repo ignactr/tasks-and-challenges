@@ -109,6 +109,10 @@ router.post('/changeStatus', adminCheck, async (req, res) => {
             }
             res.status(205).json({ message: 'Successfully changed status' }); //205 successfully changed status
         }
+        else {
+            res.status(300).json({ error: 'Wrong password' }); //300 wrong password
+            return;
+        }
 
     } catch (error) {
         if (error.response.status === 401) {
