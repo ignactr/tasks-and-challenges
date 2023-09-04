@@ -74,7 +74,14 @@ router.post('/changeLogin', adminCheck, async (req, res) => {
 });
 router.post('/editKarma', adminCheck, async (req, res) => {
     try {
-
+        const userId = req.body.id;
+        const givenKarma = req.body.karma;
+        if (givenKarma < 0) {
+            res.status(400).json({ error: 'Input must be greater or equal to 0' }); //input must be greater or equal to 0
+            return;
+        }
+        await users.findOneAndUpdate({ _id: userId }, { karma: givenKarma }, { new: true });
+        res.status(205).json({ message: 'Successfully changed karma' }); //205 successfully changed karma
     } catch (error) {
         if (error.response.status === 401) {
             res.status(401).json({ message: 'Unauthorized' });

@@ -162,7 +162,50 @@ function UsersView(props) {
         }
     }
     const handleEditKarma = async (event, selectedUserId) => {
-
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        setValidated(true);
+        event.preventDefault();
+        if (karmaController != '') {
+            const token = localStorage.getItem('accessToken');
+            await axios.post('http://localhost:5000/api/adminUserOperations/editKarma', {
+                karma: karmaController,
+                id: selectedUserId
+            }, { headers: { 'Authorization': `Bearer ${token}` } }).then(response => {
+                if (response.status === 205) {
+                    setResponseMessage('karma successfully changed');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click(); // Programmatically trigger the click event
+                        props.refresh();
+                    }
+                }
+            }).catch(error => {
+                //if user is not logged in
+                if (error.response && error.response.status === 401) {
+                    navigateTo('../notlogged');
+                }
+                //if user is logged in but he is not an admin
+                else if (error.response && error.response.status === 402) {
+                    navigateTo('../notadmin');
+                }
+                //if user is not found
+                else if (error.response && error.response.status === 410) {
+                    setResponseMessage('No user found');
+                    clearControllers();
+                    if (closeLinkRef.current) {
+                        closeLinkRef.current.click();
+                        props.refresh();
+                    }
+                }
+                else {
+                    console.log(error);
+                }
+            });
+        }
     }
     const handleChangeStatus = async (event, selectedUserId) => {
         const form = event.currentTarget;
@@ -346,7 +389,7 @@ function UsersView(props) {
                     {/* div showing change user's karma form */}
                     <div className="overlay" id="divKarma">
                         <div className="wrapper">
-                            <Form noValidate validated={validated} onSubmit={(event) => { }}>
+                            <Form noValidate validated={validated} onSubmit={(event) => { handleEditKarma(event, selectedUser._id) }}>
                                 <h3>Edit user's karma</h3>
                                 <a href="#" ref={closeLinkRef} className="close" onClick={() => { clearControllers() }}>&times;</a>
                                 <Form.Group className='mb-3' controlId='formKarma'>
@@ -355,6 +398,7 @@ function UsersView(props) {
                                         value={karmaController}
                                         onChange={event => setKarmaController(event.target.value)}
                                         type='number'
+                                        min='0'
                                         placeholder={selectedUser.karma}
                                         required
                                     />
